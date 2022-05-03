@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('consultations', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->foreignId('user_id')->nullable()->references('id')->on('users')->default(NULL);
+            $table->foreignId('agency_id')->nullable()->references('id')->on('agencies')->default(NULL);
+            $table->foreignId('consultant_id')->nullable()->references('id')->on('staff_members')->default(NULL);
+            $table->date('booked_on')->nullable()->default(NULL);
+            $table->time('booked_at')->nullable()->default(NULL);
+            $table->longText('briefing')->nullable();
+            $table->foreignId('feedback_id')->nullable()->references('id')->default(NULL)->on('feedbacks');
+            $table->foreignId('staff_member_id')->nullable()->references('id')->on('staff_members');
+            $table->foreignId('modified_by')->nullable()->references('id')->on('staff_members');
+            $table->nullableTimestamps();
+            $table->softDeletes();
+        });
+
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('consultations');
+    }
+};

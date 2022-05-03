@@ -1,0 +1,30 @@
+{
+  "name": "eutranet/laravel-corporate",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "Eutranet\\Corporate\\Tests\\": "tests/",
+      "Eutranet\\Corporate\\": "src/",
+      "Eutranet\\Corporate\\Http\\Middleware\\": "src/Http/Middleware/",
+      "Eutranet\\Corporate\\Database\\Migrations\\": "database/migrations/",
+      "Eutranet\\Corporate\\Database\\Factories\\": "database/factories/",
+      "Eutranet\\Corporate\\Database\\Seeders\\": "database/seeders/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Stéphane Maissin",
+      "email": "stephane.maissin@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Eutranet\\Corporate\\CorporateServiceProvider"
+      ]
+    },
+    "aliases": { }
+  }
+}

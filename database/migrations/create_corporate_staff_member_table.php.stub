@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('corporate_staff_member', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->foreignId('corporate_id')->nullable()->constrained();
+            $table->foreignId('staff_member_id')->nullable()->constrained();
+            $table->nullableTimestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+		Schema::table('corporate_staff_member', function (Blueprint $table) {
+			$table->dropConstrainedForeignId('corporate_id');
+            $table->dropConstrainedForeignId('staff_member_id');
+		});
+        Schema::dropIfExists('corporate_staff_member');
+    }
+};
