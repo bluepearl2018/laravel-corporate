@@ -36,7 +36,7 @@
 	<div
 			class="col-span-1 flex flex-col w-full justify-between items-center px-4 border-b text-left border-dashed border-gray-500">
 		{{-- Selected user info--}}
-		<div class=">
+		<div class="">
 			@if($selu->is_active) <i class="fa fa-circle text-green-300"></i> @else <i
 					class="fa fa-circle text-red-300"></i> @endif
 			<a class="hover:underline mr-2  font-extrabold uppercase"
