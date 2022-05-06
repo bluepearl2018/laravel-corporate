@@ -1,6 +1,6 @@
 <?php
 
-namespace Florbela\FlorbelaBackend\Http\Middleware;
+namespace Eutranet\Corporate\Http\Middleware;
 
 use Closure;
 use Flash;
@@ -20,10 +20,6 @@ class HasCurrentUserMiddleware
      */
     public function handle(Request $request, Closure $next): Response|RedirectResponse
     {
-        if (Session::get('users.currentUser')) {
-            return $next($request);
-        }
-        Flash::warning(__('No user selected'));
-        return redirect()->route('admin.dashboard');
+        return $next($request);
     }
 }

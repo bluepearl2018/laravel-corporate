@@ -4,7 +4,6 @@
 <body class="h-full font-sans antialiased">
 <div x-data="{ sidebarOpen: false, toggle() { this.sidebarOpen = ! this.sidebarOpen } }"
 	 class="min-h-full max-w-7xl mx-auto">
-
 	<!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
 	<div
 			x-show="sidebarOpen"
@@ -100,7 +99,7 @@
 			class="hidden z-40 lg:flex lg:flex-col lg:w-96 lg:fixed lg:inset-y-0 lg:border-r lg:border-gray-200 lg:pt-5 lg:pb-4 lg:bg-gray-100">
 		{{--Logo--}}
 		<div class="flex items-center flex-shrink-0 px-6">
-			<a href="{{ route('admin.back') }}">
+			<a href="{{ route('admin.dashboard') }}">
 				<img class="h-16 w-auto" src="{{ asset('images/logo.svg') }}"
 					 alt="{{ config('eutranet-corporate.name') }}"/>
 			</a>
@@ -110,35 +109,65 @@
 			<!-- Navigation -->
 			<nav class="mx-6 sm:px-0 mt-6">
 				<div class="xl:order-2 relative">
-					@auth
-						@if(Auth::user()->hasRole('super-staff'))
-							<x-theme-h2>Communication</x-theme-h2>
-							<a href="{{ route('admin.articles.create') }}">{{__('Create an article')}}</a>
-						@endif
-					@endauth
-					@auth
-						<x-theme-h2 class="mt-4">Corporate menu</x-theme-h2>
-						<ul>
-							@if(Auth::user()->hasRole('super-staff'))
-								<li>
-									<a href="{{ route('admin.corporates.show', 1) }}">{{__('Corporate details')}}</a>
-								</li>
+					@auth('staff')
+						<nav class="space-y-1" aria-label="Sidebar">
+							<div class="flex flex-row items-center @if(Route::is('admin.dashboard')) bg-gray-200 text-gray-900 @endif px-3 py-2 text-sm font-medium rounded-md">
+								<a href="{{ route('admin.dashboard') }}" class="w-full" aria-current="page">
+									<i class="fa fa-home text-gray-400 text-xl mr-3"></i>
+									<span class="truncate"> {{__('Corporate dashboard')}} </span>
+									<!-- Current: "bg-gray-50", Default: "bg-gray-200 text-gray-600" -->
+								</a>
+								<a class="@if(Route::is('admin.dashboard')) bg-gray-50 @else bg-gray-200 text-gray-600 @endif ml-auto inline-block py-0.5 px-3 text-xs rounded-full" href="{{route('backend.users.index', ['filter' => 'contact']) }}">
+									{{ \App\Models\User::where('user_status_id', '<', 2)->get()->count() }}
+								</a>
+							</div>
+							@if(Route::has('backend.dashboard'))
+								<div class="flex flex-row items-center @if(Route::is('backend.dashboard')) bg-gray-200 text-gray-900 @endif px-3 py-2 text-sm font-medium rounded-md">
+									<a href="{{ route('backend.dashboard') }}" class="w-full" aria-current="page">
+										<i class="fa fa-user-friends text-gray-400 text-xl mr-3"></i>
+										<span class="truncate"> {{__('Backend dashboard')}} </span>
+										<!-- Current: "bg-gray-50", Default: "bg-gray-200 text-gray-600" -->
+									</a>
+								</div>
 							@endif
-							<li>
-								<a href="{{ route('admin.staff-members.index') }}">{{__('Staff members')}}</a>
-							</li>
+							<a href="{{ route('admin.staff-members.index') }}"
+							   class="@if(Route::is('admin.staff-members.index')) bg-gray-200 text-gray-900 @endif text-gray-600 hover:bg-gray-50 hover:text-gray-900 flex items-center px-3 py-2 text-sm font-medium rounded-md">
+								<i class="fa fa-users-cog text-gray-400 text-xl mr-3"></i>
+								<span class="truncate">{{ __('Staff members') }}</span>
+							</a>
 							@if(Auth::user()->hasRole('super-staff'))
 								<li>
 									<a href="{{ route('admin.corporate-agreements.index') }}">{{__('Corporate agreements')}}</a>
 								</li>
 							@endif
-							<li>
-								<a href="{{ route('admin.users.index') }}">{{__('Account holders')}}</a>
-							</li>
-							<li>
-								<a href="{{ route('admin.agreements.index') }}">{{__('Agreements')}}</a>
-							</li>
-						</ul>
+							<a href="{{ route('admin.users.index') }}"
+							   class="@if(Route::is('admin.users.index')) bg-gray-200 text-gray-900 @endif text-gray-600 hover:bg-gray-50 hover:text-gray-900 flex items-center px-3 py-2 text-sm font-medium rounded-md">
+								<i class="fa fa-users text-gray-400 text-xl mr-3"></i>
+								<span class="truncate">{{ __('Accounts') }}</span>
+							</a>
+							@role('super-staff')
+								<a href="{{ route('admin.corporates.show', 1) }}"
+								   class="@if(Route::is('admin.corporates.show')) bg-gray-200 text-gray-900 @endif text-gray-600 hover:bg-gray-50 hover:text-gray-900 flex items-center px-3 py-2 text-sm font-medium rounded-md">
+									<i class="fa fa-list text-gray-400 text-xl mr-3"></i>
+									<span class="truncate">{{ __('Corporate details') }}</span>
+								</a>
+							@endrole
+							<a href="{{ route('admin.agreements.index') }}"
+							   class="@if(Route::is('admin.agreements.index')) bg-gray-200 text-gray-900 @endif text-gray-600 hover:bg-gray-50 hover:text-gray-900 flex items-center px-3 py-2 text-sm font-medium rounded-md">
+								<i class="fa fa-file-signature text-gray-400 text-xl mr-3"></i>
+								<span class="truncate">{{ __('Agreements') }}</span>
+							</a>
+							<a href="{{ route('admin.corporate-agreements.index') }}"
+							   class="@if(Route::is('admin.corporate-agreements.index')) bg-gray-200 text-gray-900 @endif text-gray-600 hover:bg-gray-50 hover:text-gray-900 flex items-center px-3 py-2 text-sm font-medium rounded-md">
+								<i class="fa fa-file-signature text-gray-400 text-xl mr-3"></i>
+								<span class="truncate">{{ __('Corporate agreements') }}</span>
+							</a>
+							<a href="{{ route('admin.corporate-general-terms.index') }}"
+							   class="@if(Route::is('admin.corporate-general-terms.index')) bg-gray-200 text-gray-900 @endif text-gray-600 hover:bg-gray-50 hover:text-gray-900 flex items-center px-3 py-2 text-sm font-medium rounded-md">
+								<i class="fa fa-file-signature text-gray-400 text-xl mr-3"></i>
+								<span class="truncate">{{ __('Corporate general terms') }}</span>
+							</a>
+						</nav>
 					@endauth
 					{{-- Filters --}}
 					<x-theme-h2 class="mt-4">{{__('Filter users by status... and more')}}</x-theme-h2>
@@ -291,11 +320,11 @@
 		</div>
 		{{-- MAIN BLOCK --}}
 		<main class="flex-1">
-			@include('theme::components.flash-message')
-			<div class="max-w-7xl mx-auto p-8">
+			<x-theme-flash-message></x-theme-flash-message>
+			<div class="p-4">
 				@yield('content')
 			</div>
-			@include('theme::partials.footer')
+			@component('theme::partials.footer', ['model' => 'EutranetCorporateModelsCorporate'])@endcomponent
 		</main>
 	</div>
 </div>

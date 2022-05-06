@@ -22,7 +22,7 @@ class CorporateAgreement extends Model implements HasMedia
      */
     protected $table = "corporate_agreements";
     protected $fillable = ['name', 'description', 'lead', 'general_terms', 'author_id'];
-    protected array $translatable = ['name', 'description', 'lead']; // 'general_terms'
+    protected array $translatable = ['name', 'description', 'lead', 'general_terms']; // 'general_terms'
 
     /**
      * This static function is essential for the documentation service provider
@@ -36,7 +36,7 @@ class CorporateAgreement extends Model implements HasMedia
 
     public static function getClassLead(): string
     {
-        return '';
+	    return 'Corporate agreementCorporate agreements are an integral part of your company documentation. They are legally binding contracts that summarize strategic arrangements between your company and other parties and agents such as suppliers and partners.';
     }
 
     /**

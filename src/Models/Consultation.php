@@ -1,6 +1,6 @@
 <?php
 
-namespace Eutranet\Corproate\Models;
+namespace Eutranet\Corporate\Models;
 
 use Flash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -66,13 +66,13 @@ class Consultation extends Model
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'agency_id' => ['select', 'list', 'required', 'Agency', 'Select the agency', '\App\Models\Corporate\Agency'],
-            'consultant_id' => ['select', 'list', 'required', 'Consultant', 'Pick a consultant / staff member from the list', '\App\Models\Staff\Staff'],
+            'agency_id' => ['select', 'list', 'required', 'Agency', 'Select the agency', '\Eutranet\Corporate\Models\Agency'],
+            'consultant_id' => ['select', 'list', 'required', 'Consultant', 'Pick a consultant / staff member from the list', '\Eutranet\Corporate\Models\StaffMember'],
             'booked_on' => ['dates', 'date', 'required', 'Booked on (Date)', 'Please pick the consultation date'],
             'booked_at' => ['dates', 'time', 'required', 'Booked at (Time)', 'Please pick the consultation time'],
             'briefing' => ['input', 'textarea', 'required', 'Enter feedback', 'Straight to the point. 2 or 3 lines, please...'],
             'feedback_id' => ['input', 'hidden', 'optional', 'The feedback id', 'Feedbacks are provided for actions'],
-            // 'modified_by' => ['select', 'simple', 'required', 'Staff', 'Select the staff member', '\App\Models\Staff\Staff'],
+            // 'modified_by' => ['select', 'simple', 'required', 'Staff', 'Select the staff member', '\Eutranet\Corporate\Models\StaffMember'],
         ];
     }
 
@@ -174,48 +174,6 @@ class Consultation extends Model
     }
 
     /**
-     * @return void
-     */
-    public static function boot()
-    {
-        parent::boot();
-        static::saveTranslations();
-
-        static::creating(function ($item) {
-            Flash::warning('Selected User : '.$item->user->name.' is being refreshed.');
-            $user = User::findOrFail($item->user_id);
-            Session::forget('users.selectedUser');
-            Session::put('users.selectedUser', $user);
-        });
-
-        static::created(function ($item) {
-            Flash::success('Consultation successfully created.');
-        });
-
-        static::updating(function ($item) {
-            Flash::warning('Selected User : '.$item->user->name.' is being refreshed.');
-            $user = User::findOrFail($item->user_id);
-            Session::forget('users.selectedUser');
-            Session::put('users.selectedUser', $user);
-        });
-
-        static::updated(function ($item) {
-            Flash::success('Consultation  uccessfully updated.');
-        });
-
-        static::deleting(function ($item) {
-            Flash::warning('Selected User : '.$item->user->name.' is being refreshed.');
-            $user = User::findOrFail($item->user_id);
-            Session::forget('users.selectedUser');
-            Session::put('users.selectedUser', $user);
-        });
-
-        static::deleted(function ($item) {
-            Flash::success('Consultation successfully deleted.');
-        });
-    }
-
-    /**
      * This static function is essential for the documentation service provider
      * The namespace is saved into doc_models table
      * @return string
@@ -224,4 +182,5 @@ class Consultation extends Model
     {
         return __NAMESPACE__;
     }
+
 }

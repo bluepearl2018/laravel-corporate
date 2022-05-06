@@ -9,7 +9,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Flash;
 use Eutranet\Commons\Models\UserStatus;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  *
@@ -25,19 +24,19 @@ trait CorporateUsersTrait
 	{
 		$users = User::paginate(10);
 		$rules = [
-			'nif' => 'nullable|min:3|max:9'
+			'nif' => 'nullable|min:1|max:999999999'
 		];
 		$validated = $request->validate($rules);
 		if($validated){
 			$nif = $request['nif'];
-			$user = User::where('nif', $nif)->get()->first();
-			if($user)
-			{
+			$user = User::where('nif', '=', $nif)->get()->first();
+			if($user !== NULL){
 				Flash::success(__('A user with tax id was found'));
 				return view('corporate::users.show', ['user' => $user]);
+			} else {
+				Flash::success(__('No user with this tax id'));
+				return view('corporate::users.index', ['users' => $users]);
 			}
-			Flash::success(__('No user with this tax id'));
-			return view('corporate::users.index', ['users' => $users]);
 		}
 		Flash::error(__('Please enter a valid NIF'));
 		return view('corporate::users.index', ['users' => $users]);
@@ -75,7 +74,12 @@ trait CorporateUsersTrait
 	 */
 	public function filterByStatusCode(UserStatus $userStatus): View
 	{
-		return view('corporate::users.index', ['userStatus' =>  $userStatus, 'filter' => $userStatus]);
+		$users = User::where('user_status_id', $userStatus->id)->paginate(10);
+		return view('corporate::users.index', [
+			'userStatus' =>  $userStatus,
+			'filter' => $userStatus,
+			'users' => $users
+		]);
 	}
 
 }

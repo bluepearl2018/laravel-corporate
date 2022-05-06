@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Eutranet\Setup\Models\StaffMember;
+use Eutranet\Corporate\Models\StaffMember;
 use Eutranet\Corporate\Models\StaffMemberUser;
 use Eutranet\Corporate\Models\User;
 
@@ -25,16 +25,27 @@ class StaffMemberUserController extends Controller
         $this->middleware(['auth:staff']);
     }
 
-    /**
-     * Get a portfolio of users for a staff member
-     * @param StaffMember $staffMember
-     * @return Application|Factory|View
-     */
-    public function index(StaffMember $staffMember): View|Factory|Application
+	/**
+	 * Get a portfolio of users for a staff member
+	 * @param Request $request
+	 * @param StaffMember $staffMember
+	 * @return Application|Factory|View
+	 */
+    public function index(Request $request, StaffMember $staffMember): View|Factory|Application
     {
-        $users = $staffMember->users ?? null;
-        // Flash::success(__('Here is the '. Auth::user()->name. '\'s portfolio'));
-        return view('corporate::users.index', ['staffMember' => $staffMember, 'users' => $users]);
+	    if ($request->get('filter') == 'contact') {
+		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 1)->paginate(10)]);
+	    } elseif ($request->get('filter') == 'lead') {
+		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 2)->paginate(10)]);
+	    } elseif ($request->get('filter') == 'customer') {
+		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 3)->paginate(10)]);
+	    } elseif ($request->get('filter') == 'resolved') {
+		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 4)->paginate(10)]);
+	    } elseif ($request->get('filter') == 'abandoned') {
+		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 5)->paginate(10)]);
+	    } else {
+		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->paginate(10)]);
+	    }
     }
 
     /**
@@ -47,7 +58,7 @@ class StaffMemberUserController extends Controller
     {
         $users = $staffMember->users ?? null;
         // Flash::success(__('Here is the '. Auth::user()->name. '\'s portfolio'));
-        return view('corporate::users.show', ['user' => $user]);
+        return view('corporate::staff-member-users.show', ['staffMember' => $staffMember, 'users' => $users]);
     }
 
     /**

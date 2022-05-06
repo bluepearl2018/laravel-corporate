@@ -13,7 +13,7 @@ return [
         'corporate_staff_member',
         'corporate_general_terms',
         'feedbacks',
-        'staff_member_user',
+        'staff_member_users',
         'services',
         'service_fees'
     ],

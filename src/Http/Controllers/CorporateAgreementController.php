@@ -22,7 +22,7 @@ class CorporateAgreementController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth:staff', 'role:super-staff']);
+        $this->middleware(['auth:staff']);
     }
 
     /**

@@ -31,11 +31,8 @@ class AgreementController extends Controller
      */
     public function index(): Factory|View|Application
     {
-        if (Auth::user()->can('list-agreements')) {
-            $agreements = Agreement::all();
-            return view('corporate::agreements.index', ['agreements' => $agreements]);
-        }
-        return abort('403');
+        $agreements = Agreement::all();
+        return view('corporate::agreements.index', ['agreements' => $agreements]);
     }
 
     /**

@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Session;
 use Eutranet\Corporate\Models\User;
 use Eutranet\Corporate\Models\Feedback;
-use function view;
 
 class FeedbackController extends Controller
 {
@@ -28,12 +27,13 @@ class FeedbackController extends Controller
      */
     public function index(User $user): View|Factory|Application
     {
-        $feedbacks = Feedback::orderBy('created_at', 'desc')->paginate(10);
-        if (Session::get('users.selectedUser') && Session::get('users.selectedUser')->feedbacks) {
-            $user = Session::get('users.selectedUser') ?? null;
-            $feedbacks = Session::get('users.selectedUser')->feedbacks->sortByDesc('created_at') ?: $feedbacks = null;
+        if ($user->feedbacks) {
+            $feedbacks = Feedback::orderBy('created_at', 'desc')->paginate(10) ?: null;
         }
-        return view('corporate::feedbacks.index', ['feedbacks' => $feedbacks, 'user' => $user]);
+        return view('corporate::feedbacks.index', [
+			'feedbacks' => $feedbacks,
+	        'user' => $user
+        ]);
     }
 
     /**
@@ -60,7 +60,7 @@ class FeedbackController extends Controller
             'feedbackable_type' => 'required|string|max:120',
             'feedbackable_id' => 'required|integer',
             'user_id' => 'exists:users,id',
-            'staff_id' => 'exists:staff_members,id'
+            'staff_member_id' => 'exists:staff_members,id'
         ];
         $validated = $request->validate($rules);
         Feedback::create($validated);

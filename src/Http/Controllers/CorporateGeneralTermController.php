@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Eutranet\Setup\Models\GeneralTerm;
 use Eutranet\Corporate\Repository\Eloquent\CorporateGeneralTermRepository;
+use Eutranet\Corporate\Models\CorporateGeneralTerm;
 
 /**
  * This controller allows admins to display the list of the laravel-corporate
@@ -47,13 +47,24 @@ class CorporateGeneralTermController extends Controller
     }
 
     /**
-     * @param GeneralTerm $generalTerm
+     * @param CorporateGeneralTerm $corporateGeneralTerm
      * @return Application|Factory|View
      */
-    public function show(GeneralTerm $generalTerm): View|Factory|Application
+    public function show(CorporateGeneralTerm $corporateGeneralTerm): View|Factory|Application
     {
         return view('corporate::corporate-general-terms.show', [
-            'generalTerm' => $generalTerm
+            'corporateGeneralTerm' => $corporateGeneralTerm
         ]);
     }
+
+	/**
+	 * @param CorporateGeneralTerm $corporateGeneralTerm
+	 * @return Application|Factory|View
+	 */
+	public function edit(CorporateGeneralTerm $corporateGeneralTerm): View|Factory|Application
+	{
+		return view('corporate::corporate-general-terms.edit', [
+			'corporateGeneralTerm' => $corporateGeneralTerm
+		]);
+	}
 }

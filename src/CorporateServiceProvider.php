@@ -9,7 +9,7 @@ use Illuminate\Routing\Router;
 use Eutranet\Corporate\Http\Middleware\CorporateMigratedMiddleware;
 use Eutranet\Corporate\Providers\CorporateMenuServiceProvider;
 use Eutranet\Corporate\Console\Commands\EutranetInstallCorporateCommand;
-use Florbela\FlorbelaBackend\Http\Middleware\HasCurrentUserMiddleware;
+use Eutranet\Corporate\Http\Middleware\HasCurrentUserMiddleware;
 
 class CorporateServiceProvider extends PackageServiceProvider
 {
@@ -26,7 +26,7 @@ class CorporateServiceProvider extends PackageServiceProvider
 			->hasMigration('create_agencies_table')
 			->hasMigration('add_agency_id_to_staff_members_table')
 			->hasMigration('create_corporate_staff_member_table')
-			->hasMigration('create_staff_member_user_table')
+			->hasMigration('create_staff_member_users_table')
 			->hasMigration('create_corporate_general_terms_table')
 			->hasMigration('create_notification_templates_table')
 			->hasMigration('create_contact_attempts_table')

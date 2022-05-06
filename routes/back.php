@@ -20,6 +20,7 @@ use Eutranet\Corporate\Http\Controllers\BackendEmailController;
 use Eutranet\Corporate\Http\Controllers\AgreementController;
 use Eutranet\Corporate\Http\Controllers\ContactAttemptController;
 use Eutranet\Corporate\Http\Controllers\FeedbackController;
+use Eutranet\Corporate\Http\Controllers\ConsultationController;
 
 /**
  * Routes intended to gain access to the back-office as STAFF
@@ -75,9 +76,7 @@ Route::middleware(['web', 'auth:staff'])->prefix('admin')->name('admin.')->group
      */
     Route::post('users/find-by-nif', [SearchUserController::class, 'findByNif'])->name('users.find-by-nif');
     Route::post('users/find-by-phone-number', [SearchUserController::class, 'findByPhoneNumber'])->name('users.find-by-phone-number');
-    Route::get('users/filter-by-status/{user_status}', [UserController::class, 'filterByStatusCode'], function (\Eutranet\Commons\Models\UserStatus $filter) {
-        return $filter;
-    })->name('users.filter-by-status');
+    Route::get('users/filter-by-status/{user_status}', [UserController::class, 'filterByStatusCode'])->name('users.filter-by-status');
     Route::resource('users', UserController::class)->names('users');
     Route::resource('staff-members.users', StaffMemberUserController::class)->names('staff-members.users');
     Route::post('assign-staff-to-user', [StaffMemberUserController::class, 'store'])->name('staff-members.assign-staff-to-user');

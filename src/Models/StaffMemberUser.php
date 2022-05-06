@@ -2,11 +2,11 @@
 
 namespace Eutranet\Corporate\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes as SoftDeletes;
 use Eutranet\Corporate\Database\Factories\StaffMemberUserFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * The StaffMemberUser class is a pivot table to create StaffMember user portfolios
@@ -15,7 +15,7 @@ class StaffMemberUser extends Model
 {
     use SoftDeletes;
 
-    protected $table = "staff_user";
+    protected $table = "staff_member_users";
     protected $fillable = [
         'staff_member_id',
         'user_id'
@@ -47,14 +47,25 @@ class StaffMemberUser extends Model
         return StaffMemberUserFactory::new();
     }
 
+
+	/**
+	 * Get the user
+	 * @return BelongsTo
+	 *
+	 */
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(User::class);
+	}
+
     /**
      * Get the user
-     * @return BelongsTo
+     * @return HasMany
      *
      */
-    public function user(): BelongsTo
+    public function users(): HasMany
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class);
     }
 
     /**

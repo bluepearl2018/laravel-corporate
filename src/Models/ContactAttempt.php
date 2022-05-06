@@ -24,7 +24,7 @@ class ContactAttempt extends Model
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'success' => ['checkbox', 'option', 'optional', 'Did you manage to contact the person?', 'Check if success. Leave blank if you did not manage to contact the person. Then SAVE'],
+            'success' => ['checkbox', 'option', 'optional', trans('contact-attempts.Did you manage to contact the person?'), trans('contact-attempts.Check if success. Leave blank if you did not manage to contact the person. Then SAVE.')],
             'staff_member_id' => ['input', 'hidden', 'required', 'The ID of the logged in staff', 'Automatic'],
             'user_id' => ['input', 'hidden', 'required', 'The ID of the contacted user', 'Automatic'],
         ];
@@ -59,4 +59,5 @@ class ContactAttempt extends Model
     {
         return __NAMESPACE__;
     }
+
 }

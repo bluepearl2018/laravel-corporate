@@ -9,6 +9,14 @@ use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\Model;
 use Eutranet\Commons\Models\UserStatus;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Eutranet\Corporate\Http\Controllers\StaffMemberUserController;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  *
@@ -120,4 +128,20 @@ class User extends Model implements HasMedia
     {
         return $this->belongsTo(UserStatus::class);
     }
+
+	/**
+	 * @return HasMany
+	 */
+	public function feedbacks(): HasMany
+	{
+		return $this->hasMany(Feedback::class);
+	}
+
+	/**
+	 * @return HasOne
+	 */
+	public function clientManager(): HasOne
+	{
+		return $this->hasOne(StaffMemberUser::class, 'staff_member_id');
+	}
 }

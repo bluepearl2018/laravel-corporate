@@ -20,13 +20,25 @@ class UserController extends Controller
 {
     use CorporateUsersTrait;
 
-    /**
-     * @return Factory|View|Application
-     */
-    public function index(): Factory|View|Application
+	/**
+	 * @param Request $request
+	 * @return Factory|View|Application
+	 */
+    public function index(Request $request): Factory|View|Application
     {
-        $users = User::paginate(10);
-        return view('corporate::users.index', ['users' => $users]);
+	    if ($request->get('filter') == 'contact') {
+		    return view('corporate::users.index', ['users' => User::where('user_status_id', 1)->paginate(10)]);
+	    } elseif ($request->get('filter') == 'lead') {
+		    return view('corporate::users.index', ['users' => User::where('user_status_id', 2)->paginate(10)]);
+	    } elseif ($request->get('filter') == 'customer') {
+		    return view('corporate::users.index', ['users' => User::where('user_status_id', 3)->paginate(10)]);
+	    } elseif ($request->get('filter') == 'resolved') {
+		    return view('corporate::users.index', ['users' => User::where('user_status_id', 4)->paginate(10)]);
+	    } elseif ($request->get('filter') == 'abandoned') {
+		    return view('corporate::users.index', ['users' => User::where('user_status_id', 5)->paginate(10)]);
+	    } else {
+		    return view('corporate::users.index', ['users' => User::paginate(10)]);
+	    }
     }
 
     /**

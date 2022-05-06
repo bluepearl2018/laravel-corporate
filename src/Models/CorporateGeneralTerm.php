@@ -52,7 +52,7 @@ class CorporateGeneralTerm extends GeneralTerm implements HasMedia
 
     public static function getClassLead(): string
     {
-        return '';
+        return 'Terms and conditions are aimed at protecting the business (you). They give business owners the opportunity to set their rules (within applicable law) of how their service or product may be used including, but not limited to, things like copyright conditions, age limits, and the governing law of the contract.';
     }
 
     #[ArrayShape(['corporate_id' => "string[]", 'title' => "string[]", 'description' => "string[]", 'lead' => "string[]", 'body' => "string[]", 'file_path' => "string[]"])]
@@ -60,12 +60,12 @@ class CorporateGeneralTerm extends GeneralTerm implements HasMedia
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'corporate_id' => ['select', 'list', 'required', 'Corporate', 'Select the corporate', 'Eutranet\Corporate\Models\Corporate'],
             'title' => ['input', 'textarea', 'required', 'Title', 'Enter the title'],
-            'description' => ['input', 'textarea', 'required', 'Description', 'Enter the description'],
             'lead' => ['input', 'textarea', 'required', 'Lead', 'Enter the lead / intro'],
             'body' => ['input', 'textarea', 'required', 'Body', 'Enter the body'],
             'file_path' => ['input', 'file', 'optional', 'PDF version', 'Get a PDF from you preferred folder'],
+	        'description' => ['input', 'textarea', 'required', 'Description', 'Enter the description'],
+	        'corporate_id' => ['select', 'list', 'required', 'Corporate', 'Select the corporate', 'Eutranet\Corporate\Models\Corporate'],
         ];
     }
 

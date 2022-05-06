@@ -130,4 +130,5 @@ class Corporate extends Model implements HasMedia
     {
         return $this->belongsTo(Country::class);
     }
+
 }

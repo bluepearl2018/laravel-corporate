@@ -21,7 +21,7 @@
 				@csrf
 				@method('PUT')
 				@foreach($fields as $columnName => $specs)
-					<x-dynamic-component :component="'theme::forms.'.$specs[0].'-'.$specs[1]"
+					<x-dynamic-component :component="'theme-form-'.$specs[0].'-'.$specs[1]"
 										 :name="$columnName"
 										 :id="Str::slug($columnName)"
 										 :placeholder=" $specs[3]"

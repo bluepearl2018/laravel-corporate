@@ -1,35 +1,52 @@
 @extends('corporate::layouts.master')
 @section('content')
 	<div class="user-tab-content">
+		@includeIf('corporate::contact-attempts.actions-and-title')
 		<div class="col-span-full">
 			<x-theme-h1>{{ __('Contact attempt info') }}</x-theme-h1>
-			<strong>Contact : {{ $contactAttempt->user->name ?? 'NO LEAD'  }} | Tax ID
-				: {{ $contactAttempt->user->nif ?? 'NO NIF'  }} | Phone
-				: {{ $contactAttempt->user->phone ?? 'NO PHONE'  }}</strong>
-			<p>Trial at : {{ $contactAttempt->created_at ?? 'NO CREATION DATE' }}</p>
-			<div class="my-2 p-4 border-gray-500 rounded-xl bg-gray-100">
+			<strong>{{__('Contact :')}} {{ $contactAttempt->user->name ?? __('NO LEAD')  }} | {{ __('Tax ID') }}
+				: {{ $contactAttempt->user->nif ?? __('NO NIF')  }} | {{ __('Phone') }}
+				: {{ $contactAttempt->user->phone ?? __('NO PHONE')  }}</strong>
+			<p>{{ __('Trial at :') }} {{ $contactAttempt->created_at->format('d-m-Y @ H:i:s') ?? __('NO CREATION DATE') }}</p>
+			<div class="my-2 p-4 border-gray-500 rounded-xl bg-gray-100 flex flex-row items-center">
 				@if($contactAttempt->success)
-					<i class="fa fa-check text-green-500"></i>
+					<i class="fa fa-check text-green-500 mr-2"></i>
 				@else
-					<i class="fa fa-exclamation-circle text-red-500"></i>
+					<i class="fa fa-exclamation-circle text-red-500 mr-2"></i>
 				@endif
-				{{ $contactAttempt->feedback->body ?? 'NO FEEDBACK' }}
+				{!! $contactAttempt->feedback->body ?? 'NO FEEDBACK'  !!}
 			</div>
-			<x-ui.back.h2 class="mt-2">{{__('Contact attempts history')}}</x-ui.back.h2>
-			@forelse(\App\Models\Contacts\ContactAttempt::where('user_id', $user->id)->orderByDesc('created_at')->get() as $ca)
-				<div class="col-span-full">
-					<a href="{{ route('admin.users.contact-attempts.show', [$selu, $ca]) }}"
-					   class="w-full p-0.5 border-b-2 border-gray-400">
-						@if($ca->success)
-							<i class="fa fa-check text-green-500 w-3 mr-2 inline-block"></i>
+			<x-theme-h2 class="mt-2">{{__('Contact attempts history')}}</x-theme-h2>
+			@forelse(\Eutranet\Corporate\Models\ContactAttempt::where('user_id', $user->id)->orderByDesc('created_at')->get() as $ca)
+				<div x-data="{ feedback{{$loop->index}} : false }" class="col-span-full space-y-2 border-b border-gray-300">
+					<div class="flex-row flex sm:justify-between items-center pt-2">
+						<div
+						   class="w-full p-0.5">
+							@if($ca->success)
+								<i class="fa fa-check text-green-500 w-3 mr-2 inline-block"></i>
+							@else
+								<i class="fa fa-times text-red-500 w-3 mr-2 inline-block"></i>
+							@endif
+							{{ $ca->user->name }}
+							| {{ $ca->created_at ? date_format($ca->created_at, 'd-m-Y') : 'NO CREATION DATE' }}
+							@ {{ $ca->created_at ? date_format($ca->created_at, 'H:i:s') : 'NO CREATION TIME' }}
+						</div>
+						@if(isset($ca->feedback) && !empty($ca->feedback->body))
+							<button class="w-8 sm:w-auto btn-primary my-0 px-0.5 py-0" @click="feedback{{$loop->index}} = ! feedback{{$loop->index}}">
+								<span class="visible sm:hidden"><i class="fa fa-plus"></i></span>
+								<span class="hidden sm:block">{{__('Feedback')}}</span>
+							</button>
 						@else
-							<i class="fa fa-times text-red-500 w-3 mr-2 inline-block"></i>
+							{{ __('No feedback') }}
 						@endif
-						{{ $ca->user->name }}
-						| {{ $ca->created_at ? date_format($ca->created_at, 'd-m-Y') : 'NO CREATION DATE' }}
-						@ {{ $ca->created_at ? date_format($ca->created_at, 'H:i:s') : 'NO CREATION TIME' }}
-						| {{$ca->feedback->body ?? 'NO FEEDBACK'}}
-					</a>
+					</div>
+					@if(isset($ca->feedback) && !empty($ca->feedback->body))
+						<div x-show="feedback{{$loop->index}}" class="px-2 bg-gray-300 rounded">
+							<span class="block truncate">
+								{!! strip_tags($ca->feedback->body) ?? 'NO FEEDBACK'  !!}
+							</span>
+						</div>
+					@endif
 				</div>
 			@empty
 			@endforelse

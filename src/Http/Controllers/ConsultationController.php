@@ -11,17 +11,12 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Eutranet\Corporate\Models\User;
-use Eutranet\Corproate\Models\Consultation;
+use Eutranet\Corporate\Models\Consultation;
 
 class ConsultationController extends Controller
 {
-    private $bookedOn;
-
-    public function __construct(BookedOnHelper $bookedOn)
+    public function __construct()
     {
-        $this->bookedOn = $bookedOn;
-        $this->middleware('has-selu');
-        $this->middleware('has-user-info');
     }
 
     /**
@@ -36,19 +31,22 @@ class ConsultationController extends Controller
     {
         $consultations = Consultation::orderBy('booked_on', 'desc')->orderBy('booked_at')->paginate(10) ?? null;
         if ($request->get('filter') == Carbon::today()->format('Y-m-d')) {
-            return view('back.consultations.index', [
-                'consultations' => $consultations->where('booked_on', Carbon::today()->format('Y-m-d'))
+            return view('corporate::consultations.index', [
+                'consultations' => $consultations->where('booked_on', Carbon::today()->format('Y-m-d')),
+	            'user' => $user
             ]);
         } elseif ($request->get('filter') == Carbon::tomorrow()->format('Y-m-d')) {
-            return view('back.consultations.index', [
-                'consultations' => $consultations->where('booked_on', Carbon::tomorrow()->format('Y-m-d'))
+            return view('corporate::consultations.index', [
+                'consultations' => $consultations->where('booked_on', Carbon::tomorrow()->format('Y-m-d')),
+                'user' => $user
             ]);
         } elseif ($request->get('filter') == Carbon::yesterday()->format('Y-m-d')) {
-            return view('back.consultations.index', [
-                'consultations' => $consultations->where('booked_on', Carbon::yesterday()->format('Y-m-d'))
+            return view('corporate::consultations.index', [
+                'consultations' => $consultations->where('booked_on', Carbon::yesterday()->format('Y-m-d')),
+	            'user' => $user
             ]);
         }
-        return view('back.consultations.index', ['consultations' => $consultations, 'user' => $user]);
+        return view('corporate::consultations.index', ['consultations' => $consultations, 'user' => $user]);
     }
 
     /**
@@ -60,7 +58,10 @@ class ConsultationController extends Controller
     {
         if ($user->consultations) {
             $consultations = Consultation::orderBy('booked_on', 'desc')->orderBy('booked_at')->where('user_id', $user->id)->get() ?? null;
-            return view('back.consultations.index', ['consultations' => $consultations]);
+            return view('corporate::consultations.index', [
+				'consultations' => $consultations,
+	            'user' => $user
+            ]);
         }
         return $this->create($user);
     }
@@ -72,7 +73,9 @@ class ConsultationController extends Controller
      */
     public function create(?User $user): View|Factory|Application
     {
-        return view('back.consultations.create', ['user' => $user]);
+        return view('corporate::consultations.create', [
+			'user' => $user
+        ]);
     }
 
     /**
@@ -84,13 +87,18 @@ class ConsultationController extends Controller
     public function store(Request $request, ?User $user): RedirectResponse
     {
         $rules = [
+			'agency_id' => 'exists:agencies,id',
+	        'consultant_id' => 'exists:staff_members,id',
             'user_id' => 'exists:users,id',
+	        'booked_on' => 'date',
+	        'booked_at' => 'date_format:"H:i"',
             'staff_member_id' => 'exists:staff_members,id',
+	        'briefing' => 'nullable|max:1024|string'
         ];
         $validated = $request->validate($rules);
-        $consultation = Consultation::firstOrCreate($validated);
+        $consultation = Consultation::create($validated);
 
-        $user->notify(new ConsultationBooked($consultation));
+        // $user->notify(new ConsultationBooked($consultation));
         return redirect()->route('admin.users.consultations.show', [$user, $consultation]);
     }
 
@@ -103,7 +111,10 @@ class ConsultationController extends Controller
      */
     public function show(?User $user, Consultation $consultation): Factory|View|Application
     {
-        return view('back.consultations.show', ['consultation' => $consultation]);
+        return view('corporate::consultations.show', [
+			'consultation' => $consultation,
+	        'user' => $user
+        ]);
     }
 
     /**
@@ -122,7 +133,7 @@ class ConsultationController extends Controller
             'booked_on' => 'date',
             'booked_at' => 'date_format:"H:i"',
             'staff_member_id' => 'exists:staff_members,id',
-            'briefing' => 'nullable|max:1024'
+            'briefing' => 'nullable|max:1024|string'
         ];
         $validated = $request->validate($rules);
         $consultation->update($validated);

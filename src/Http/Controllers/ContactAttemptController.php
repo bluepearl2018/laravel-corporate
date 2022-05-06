@@ -13,6 +13,9 @@ use Session;
 use Eutranet\Corporate\Models\ContactAttempt;
 use Eutranet\Corporate\Models\Feedback;
 use function view;
+use Illuminate\Http\RedirectResponse;
+use Flash;
+use Illuminate\Routing\Redirector;
 
 class ContactAttemptController extends Controller
 {
@@ -35,7 +38,10 @@ class ContactAttemptController extends Controller
             $contactAttempts = Session::get('users.selectedUser')->contactAttempts->sortByDesc('created_at') ?? $contactAttempts = null;
         }
         $contactAttempts = $user->contactAttempts ?? $contactAttempts = ContactAttempt::all();
-        return view('back.contact-attempts.index', ['contactAttempts' => $contactAttempts]);
+        return view('corporate::contact-attempts.index', [
+			'contactAttempts' => $contactAttempts,
+	        'user' => $user
+        ]);
     }
 
     /**
@@ -46,17 +52,19 @@ class ContactAttemptController extends Controller
      */
     public function create(?User $user): View|Factory|Application
     {
-        return view('corporate::contact-attempts.create', ['user' => $user]);
+        return view('corporate::contact-attempts.create', [
+			'user' => $user
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @param User $user
-     * @return Application|Factory|View
-     */
-    public function store(Request $request, User $user): View|Factory|Application
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param Request $request
+	 * @param User $user
+	 * @return RedirectResponse
+	 */
+    public function store(Request $request, User $user): RedirectResponse
     {
         $success = '';
         if ($request->has('success')) {
@@ -80,7 +88,7 @@ class ContactAttemptController extends Controller
             'modified_by' => null
         ]);
         $feedback->save();
-        return $this->show($user, $contactAttempt);
+        return redirect(route('admin.users.contact-attempts.show', [$user, $contactAttempt]));
     }
 
     /**
@@ -92,18 +100,21 @@ class ContactAttemptController extends Controller
      */
     public function show(?User $user, ContactAttempt $contactAttempt): View|Factory|Application
     {
-        return view('back.contact-attempts.show', ['user' => $user,'contactAttempt' => $contactAttempt]);
+        return view('corporate::contact-attempts.show', ['user' => $user,'contactAttempt' => $contactAttempt]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param ContactAttempt $contactAttempt
-     * @return Application|Factory|View
-     */
-    public function edit(ContactAttempt $contactAttempt): View|Factory|Application
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param User|null $user
+	 * @param ContactAttempt $contactAttempt
+	 * @return RedirectResponse
+	 */
+    public function edit(?User $user, ContactAttempt $contactAttempt) : RedirectResponse
     {
-        return view('back.contact-attempts.edit', ['contactAttempt' => $contactAttempt]);
+		Flash::info(trans('Contact attempt edit is not available.'));
+		return back();
+		// return view('corporate::contact-attempts.edit', ['contactAttempt' => $contactAttempt]);
     }
 
     /**
@@ -111,25 +122,23 @@ class ContactAttemptController extends Controller
      *
      * @param Request $request
      * @param ContactAttempt $contactAttempt
-     * @return Application|Factory|View
+     * @return RedirectResponse
      */
-    public function update(Request $request, ContactAttempt $contactAttempt): Application|Factory|View
+    public function update(Request $request, ContactAttempt $contactAttempt): RedirectResponse
     {
-        $rules = [];
-        $request->validate($rules);
-        $contactAttempt->update($request->all());
-        return $this->show($contactAttempt->user, $contactAttempt);
+	    Flash::info(trans('Contact attempt update is not available.'));
+	    return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param ContactAttempt $contactAttempt
-     * @return Application|Factory|View
-     */
-    public function destroy(ContactAttempt $contactAttempt): View|Factory|Application
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param ContactAttempt $contactAttempt
+	 * @return RedirectResponse
+	 */
+    public function destroy(ContactAttempt $contactAttempt): RedirectResponse
     {
-        $contactAttempt->delete();
-        return $this->index(null);
+	    Flash::info(trans('Contact attempt deletion is not available.'));
+	    return back();
     }
 }

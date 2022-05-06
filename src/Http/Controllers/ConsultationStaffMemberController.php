@@ -10,7 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Eutranet\Corporate\Models\StaffMember;
-use Eutranet\Corproate\Models\Consultation;
+use Eutranet\Corporate\Models\Consultation;
 
 /**
  * The consultation staff controller allows the logged in staff member to retrieve a list

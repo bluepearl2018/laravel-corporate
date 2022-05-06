@@ -32,6 +32,6 @@ Route::middleware(['web', 'auth:admin'])->name('setup.')->prefix('setup')->group
     Route::resource('services', ServiceController::class)->names('services');
     Route::resource('service-fees', ServiceFeeController::class)->names('service-fees');
     Route::resource('staff-teams', StaffTeamController::class)->names('staff-teams');
-    Route::resource('staff-member-user', StaffMemberUserController::class)->names('staff-member-user');
+    Route::resource('staff-member-users', StaffMemberUserController::class)->names('staff-member-users');
     Route::resource('teams', TeamController::class)->names('teams');
 });
