@@ -10,15 +10,16 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Eutranet\Corporate\Models\StaffMember;
-use Eutranet\Corporate\Models\StaffMemberUser;
+use Eutranet\Corporate\Models\StaffPortfolio;
 use Eutranet\Corporate\Models\User;
+use Session;
 
 /**
  * The staff user controller allows one to get access to user resources through the
  * staff_user pivot table. This controller is meant to manage a staff's user portfolio.
  *
  */
-class StaffMemberUserController extends Controller
+class StaffPortfolioController extends Controller
 {
     public function __construct()
     {
@@ -34,17 +35,17 @@ class StaffMemberUserController extends Controller
     public function index(Request $request, StaffMember $staffMember): View|Factory|Application
     {
 	    if ($request->get('filter') == 'contact') {
-		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 1)->paginate(10)]);
+		    return view('corporate::staff-portfolio.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 1)->paginate(10)]);
 	    } elseif ($request->get('filter') == 'lead') {
-		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 2)->paginate(10)]);
+		    return view('corporate::staff-portfolio.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 2)->paginate(10)]);
 	    } elseif ($request->get('filter') == 'customer') {
-		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 3)->paginate(10)]);
+		    return view('corporate::staff-portfolio.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 3)->paginate(10)]);
 	    } elseif ($request->get('filter') == 'resolved') {
-		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 4)->paginate(10)]);
+		    return view('corporate::staff-portfolio.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 4)->paginate(10)]);
 	    } elseif ($request->get('filter') == 'abandoned') {
-		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 5)->paginate(10)]);
+		    return view('corporate::staff-portfolio.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->where('user_status_id', 5)->paginate(10)]);
 	    } else {
-		    return view('corporate::staff-member-users.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->paginate(10)]);
+		    return view('corporate::staff-portfolio.index', ['staffMember' => $staffMember, 'users' => $staffMember->users()->paginate(10)]);
 	    }
     }
 
@@ -58,7 +59,7 @@ class StaffMemberUserController extends Controller
     {
         $users = $staffMember->users ?? null;
         // Flash::success(__('Here is the '. Auth::user()->name. '\'s portfolio'));
-        return view('corporate::staff-member-users.show', ['staffMember' => $staffMember, 'users' => $users]);
+        return view('corporate::staff-portfolio.show', ['staffMember' => $staffMember, 'users' => $users]);
     }
 
     /**
@@ -70,12 +71,12 @@ class StaffMemberUserController extends Controller
         if (Auth::user()->hasRole('super-staff')) {
             $rules = [
                 // You may explicitly specify the database column name that should be used by the validation rule by placing it after the database table name:
-                'user_id' => ['unique:staff_member_user', 'exists:users,id'],
+                'user_id' => ['exists:users,id'],
                 'staff_member_id' => ['exists:staff_members,id'],
             ];
 
-            $validatedData = $request->validateWithBag('staff_member_user', $rules);
-            $assignedUser = StaffMemberUser::create(['user_id' => $request->user_id, 'staff_member_id' => $request->staff_member_id]);
+            $validatedData = $request->validateWithBag('staff_portfolio', $rules);
+            $assignedUser = StaffPortfolio::create(['user_id' => $request->user_id, 'staff_member_id' => $request->staff_member_id]);
             return redirect()->back();
         }
         abort('403');

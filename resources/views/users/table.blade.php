@@ -82,13 +82,13 @@
 					</td>
 					<td class="hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell">
 						<div class="text-sm text-gray-500 text-center">
-							@if(isset($user->clientManager) && isset($user->clientManager->staffMember))
+							@if(isset($user->staffMembers) && $user->staffMembers->first() !== NULL)
 								<i class="fa fa-check-circle text-green-500 mr-2"></i>
 								<div class="text-sm text-gray-900 text-center">
 									<div>
-										{{ $user->clientManager->staffMember->name }}
+										{{ $user->staffMembers->first()?->name }}
 									</div>
-									{{ $user->clientManager->staffMember->agency?->zone }}
+									{{ $user->staffMembers->first()?->agency?->zone }}
 									@else
 										@role('super-staff')
 										<div class="flex flex-row justify-items-center justify-center space-x-2">

@@ -28,7 +28,7 @@ class StaffMember extends \Eutranet\Setup\Models\StaffMember
 	 */
 	public function users(): BelongsToMany
 	{
-		return $this->belongsToMany(User::class, StaffMemberUser::class);
+		return $this->belongsToMany(User::class, StaffPortfolio::class);
 	}
 
 	/**

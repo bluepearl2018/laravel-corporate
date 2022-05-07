@@ -29,21 +29,21 @@ class ConsultationController extends Controller
      */
     public function index(Request $request, ?User $user, $filter = null): Factory|View|Application
     {
-        $consultations = Consultation::orderBy('booked_on', 'desc')->orderBy('booked_at')->paginate(10) ?? null;
+		$consultations = Consultation::orderBy('booked_on', 'desc')->orderBy('booked_at')->paginate(10) ?? null;
         if ($request->get('filter') == Carbon::today()->format('Y-m-d')) {
             return view('corporate::consultations.index', [
                 'consultations' => $consultations->where('booked_on', Carbon::today()->format('Y-m-d')),
-	            'user' => $user
+	            'user' => User::find($user->id) ?? NULL
             ]);
         } elseif ($request->get('filter') == Carbon::tomorrow()->format('Y-m-d')) {
             return view('corporate::consultations.index', [
                 'consultations' => $consultations->where('booked_on', Carbon::tomorrow()->format('Y-m-d')),
-                'user' => $user
+	            'user' => User::find($user->id) ?? NULL
             ]);
         } elseif ($request->get('filter') == Carbon::yesterday()->format('Y-m-d')) {
             return view('corporate::consultations.index', [
                 'consultations' => $consultations->where('booked_on', Carbon::yesterday()->format('Y-m-d')),
-	            'user' => $user
+	            'user' => User::find($user->id) ?? NULL
             ]);
         }
         return view('corporate::consultations.index', ['consultations' => $consultations, 'user' => $user]);
@@ -51,16 +51,16 @@ class ConsultationController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @param User $user
+     * @param User|null $user
      * @return View|Factory|Application|RedirectResponse
      */
-    public function userConsultations(User $user): View|Factory|Application|RedirectResponse
+    public function userConsultations(?User $user): View|Factory|Application|RedirectResponse
     {
         if ($user->consultations) {
             $consultations = Consultation::orderBy('booked_on', 'desc')->orderBy('booked_at')->where('user_id', $user->id)->get() ?? null;
             return view('corporate::consultations.index', [
 				'consultations' => $consultations,
-	            'user' => $user
+	            'user' => User::find($user->id) ?? NULL
             ]);
         }
         return $this->create($user);
@@ -74,7 +74,7 @@ class ConsultationController extends Controller
     public function create(?User $user): View|Factory|Application
     {
         return view('corporate::consultations.create', [
-			'user' => $user
+	        'user' => User::find($user->id) ?? NULL
         ]);
     }
 
@@ -113,7 +113,7 @@ class ConsultationController extends Controller
     {
         return view('corporate::consultations.show', [
 			'consultation' => $consultation,
-	        'user' => $user
+	        'user' => User::find($user->id) ?? NULL
         ]);
     }
 

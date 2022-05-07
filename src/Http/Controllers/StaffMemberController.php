@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Auth;
 use Eutranet\Corporate\Models\Corporate;
 use function view;
+use Laracasts\Flash\Flash;
 
 class StaffMemberController extends Controller
 {
@@ -118,10 +119,14 @@ class StaffMemberController extends Controller
      * Remove the specified resource from storage.
      *
      * @param StaffMember $staffMember
-     * @return void
+     * @return RedirectResponse
      */
-    public function destroy(StaffMember $staffMember)
+    public function destroy(StaffMember $staffMember): RedirectResponse
     {
-        $staffMember->delete();
+	    if (Auth::check() && Auth::user()->hasRole(['admin', 'super-staff'])) {
+            $staffMember->delete();
+			return redirect()->route('admin.staff-members.index');
+		}
+	    return abort('403');
     }
 }

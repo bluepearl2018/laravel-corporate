@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * @extends Factory
  */
-class StaffMemberUserFactory extends Factory
+class StaffPortfolioFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,7 +21,7 @@ class StaffMemberUserFactory extends Factory
 
     #[ArrayShape(['staff_member_id' => "mixed", 'user_id' => "mixed"])] public function definition(): array
     {
-        if (DB::table('staff_member_user')->get()->count() < 1) {
+        if (DB::table('staff_portfolio')->get()->count() < 1) {
             $staffIds = StaffMember::lists('id')->all(); // returns an array of all ids in the Lessons table
             $userIds = User::lists('id')->all();
 

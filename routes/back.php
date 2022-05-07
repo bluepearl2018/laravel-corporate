@@ -5,7 +5,7 @@ use Eutranet\Corporate\Http\Controllers\CorporateController;
 use Eutranet\Corporate\Http\Controllers\CorporateGeneralTermController;
 use Eutranet\Corporate\Http\Controllers\ServiceFeeController;
 use Eutranet\Corporate\Http\Controllers\StaffMemberController;
-use Eutranet\Corporate\Http\Controllers\StaffMemberUserController;
+use Eutranet\Corporate\Http\Controllers\StaffPortfolioController;
 use Eutranet\Corporate\Http\Controllers\UserController;
 use Eutranet\Setup\Http\Controllers\Auth\AuthenticatedSessionController;
 use Eutranet\Corporate\Http\Controllers\DashboardController;
@@ -78,8 +78,8 @@ Route::middleware(['web', 'auth:staff'])->prefix('admin')->name('admin.')->group
     Route::post('users/find-by-phone-number', [SearchUserController::class, 'findByPhoneNumber'])->name('users.find-by-phone-number');
     Route::get('users/filter-by-status/{user_status}', [UserController::class, 'filterByStatusCode'])->name('users.filter-by-status');
     Route::resource('users', UserController::class)->names('users');
-    Route::resource('staff-members.users', StaffMemberUserController::class)->names('staff-members.users');
-    Route::post('assign-staff-to-user', [StaffMemberUserController::class, 'store'])->name('staff-members.assign-staff-to-user');
+    Route::resource('staff-members.users', StaffPortfolioController::class)->names('staff-members.users');
+    Route::post('assign-staff-to-user', [StaffPortfolioController::class, 'store'])->name('staff-members.assign-staff-to-user');
 
     /**
      * MAILER

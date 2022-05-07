@@ -12,6 +12,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Eutranet\Corporate\Traits\CorporateUsersTrait;
 use Eutranet\Corporate\Models\User;
 use function redirect;
+use Session;
 
 /**
  *
@@ -51,19 +52,19 @@ class UserController extends Controller
     }
 
     /**
-     * @param User $user
+     * @param User|null $user
      * @return Factory|View|Application
      */
-    public function show(User $user): Factory|View|Application
+    public function show(?User $user): Factory|View|Application
     {
         return view('corporate::users.show', ['user' => $user]);
     }
 
     /**
-     * @param User $user
+     * @param User|null $user
      * @return Factory|View|Application
      */
-    public function edit(User $user): Factory|View|Application
+    public function edit(?User $user): Factory|View|Application
     {
         return view('corporate::users.edit', [
             'user' => $user

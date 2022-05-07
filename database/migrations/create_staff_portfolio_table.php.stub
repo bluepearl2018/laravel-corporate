@@ -12,11 +12,11 @@ return new class extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staff_member_users', function (Blueprint $table) {
+		Schema::create('staff_portfolio', function (Blueprint $table) {
 			$table->bigIncrements('id');
 			$table->foreignId('user_id')->constrained();
             $table->foreignId('staff_member_id')->nullable()->constrained();
-			$table->unique('user_id');
+			$table->unique(['user_id', 'staff_member_id']);
 			$table->nullableTimestamps();
 			$table->softDeletes();
 		});
@@ -29,6 +29,6 @@ return new class extends Migration {
 	 */
 	public function down()
 	{
-        Schema::dropIfExists('staff_member_users');
+        Schema::dropIfExists('staff_portfolio');
 	}
 };

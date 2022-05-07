@@ -26,7 +26,7 @@ class CorporateServiceProvider extends PackageServiceProvider
 			->hasMigration('create_agencies_table')
 			->hasMigration('add_agency_id_to_staff_members_table')
 			->hasMigration('create_corporate_staff_member_table')
-			->hasMigration('create_staff_member_users_table')
+			->hasMigration('create_staff_portfolio_table')
 			->hasMigration('create_corporate_general_terms_table')
 			->hasMigration('create_notification_templates_table')
 			->hasMigration('create_contact_attempts_table')

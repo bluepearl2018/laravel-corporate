@@ -3,30 +3,23 @@
 	<div class="user-tab-content">
 		@includeIf('corporate::consultations.actions-and-title')
 		<x-theme-form-validation-errors></x-theme-form-validation-errors>
-		<div class="col-span-1">
+		<div class="col-span-1 bg-gray-100 rounded p-4">
 			<x-theme-h1>
-				{{ __('Consultation details') }}
+				{{ __('Consultation for ') }} {{$user->name}}
 			</x-theme-h1>
-			<p class="mb-2 italic">{{__('Schedule new consultation')}}</p>
-			<form id="selected-user-consultations-update-frm"
-				  action="{{route('admin.users.consultations.update', [$user, $consultation])}}"
-				  method="POST">
-				@csrf
-				@method('PUT')
-				@foreach(\Eutranet\Corporate\Models\Consultation::getFields() as $columnName => $specs)
-					<div class="col-span-1 break-inside-avoid">
-						<x-dynamic-component :component="'theme-form-'.$specs[0].'-'.$specs[1]"
-											 :specs="$specs"
-											 :old="$consultation->$columnName"
-											 :columnName="$columnName">
-						</x-dynamic-component>
+			@forelse(collect($consultation->getFields()) as $key => $field)
+				<div class="w-full flex-col flex rounded py-1 border-b border-gray-300">
+					<div class="w-1/3 font-semibold">
+						{{ $field[3] }}
 					</div>
-				@endforeach
-				<input type="hidden" name="a_or_b" value="a">
-				<input type="hidden" name="user_id" value="{{ $user->id }}">
-				<input type="hidden" name="staff_member_id" value="{{Auth::id()}}">
-				<x-theme-form-update-buttons form="selected-user-consultations-update-frm"></x-theme-form-update-buttons>
-			</form>
+					@if($field[0] === 'select')
+						<div>{!! $field[5]::where('id', $consultation->$key)->get()->first() ? $field[5]::where('id', $consultation->$key)->get()->first()->name : '<i class="fa fa-times text-red-500"></i>' !!} </div>
+					@else
+						<div>{!! $consultation->$key ?: '<i class="fa fa-times text-red-500"></i>' !!} </div>
+					@endif
+				</div>
+			@empty
+			@endforelse
 		</div>
 		<div class="col-span-1">
 			<x-theme-h2>{{__('Save feedback for the consultation')}}</x-theme-h2>

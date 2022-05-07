@@ -3,7 +3,7 @@
 namespace Eutranet\Corporate\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Eutranet\Corporate\Database\Factories\StaffMemberUserFactory;
+use Eutranet\Corporate\Database\Factories\StaffPortfolioFactory;
 use Database\Factories\UserFactory;
 use Illuminate\Support\Facades\DB;
 

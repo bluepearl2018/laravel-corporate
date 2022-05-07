@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Eutranet\Corporate\Http\Controllers\StaffMemberUserController;
+use Eutranet\Corporate\Http\Controllers\StaffPortfolioController;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -138,10 +138,10 @@ class User extends Model implements HasMedia
 	}
 
 	/**
-	 * @return HasOne
+	 * @return BelongsToMany
 	 */
-	public function clientManager(): HasOne
+	public function staffMembers(): BelongsToMany
 	{
-		return $this->hasOne(StaffMemberUser::class, 'staff_member_id');
+		return $this->belongsToMany(StaffMember::class, StaffPortfolio::class);
 	}
 }

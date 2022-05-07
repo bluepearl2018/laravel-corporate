@@ -185,7 +185,7 @@ class Agency extends Model implements HasMedia
      */
     public function users(): HasManyThrough
     {
-        return $this->hasManyThrough(User::class, StaffMemberUser::class);
+        return $this->hasManyThrough(User::class, StaffPortfolio::class);
     }
 
     /**

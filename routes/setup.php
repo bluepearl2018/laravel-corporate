@@ -6,7 +6,7 @@ use Eutranet\Corporate\Http\Controllers\CorporateController;
 use Eutranet\Corporate\Http\Controllers\CorporateGeneralTermController;
 use Eutranet\Frontend\Http\Controllers\ServiceController;
 use Eutranet\Corporate\Http\Controllers\ServiceFeeController;
-use Eutranet\Corporate\Http\Controllers\StaffMemberUserController;
+use Eutranet\Corporate\Http\Controllers\StaffPortfolioController;
 use Eutranet\Corporate\Http\Controllers\ConsultationController;
 use Eutranet\Corporate\Http\Controllers\ContactAttemptController;
 use Eutranet\Corporate\Http\Controllers\FeedbackController;
@@ -32,6 +32,6 @@ Route::middleware(['web', 'auth:admin'])->name('setup.')->prefix('setup')->group
     Route::resource('services', ServiceController::class)->names('services');
     Route::resource('service-fees', ServiceFeeController::class)->names('service-fees');
     Route::resource('staff-teams', StaffTeamController::class)->names('staff-teams');
-    Route::resource('staff-member-users', StaffMemberUserController::class)->names('staff-member-users');
+    Route::resource('staff-portfolio', StaffPortfolioController::class)->names('staff-portfolio');
     Route::resource('teams', TeamController::class)->names('teams');
 });

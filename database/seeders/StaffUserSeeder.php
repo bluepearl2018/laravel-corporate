@@ -3,7 +3,7 @@
 namespace Eutranet\Corporate\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Eutranet\Corporate\Database\Factories\StaffMemberUserFactory;
+use Eutranet\Corporate\Database\Factories\StaffPortfolioFactory;
 use Database\Factories\UserFactory;
 
 class StaffUserSeeder extends Seeder
@@ -15,6 +15,6 @@ class StaffUserSeeder extends Seeder
      */
     public function run()
     {
-        new StaffMemberUserFactory();
+        new StaffPortfolioFactory();
     }
 }
