@@ -30,7 +30,7 @@
 										 :tip="$specs[4]"
 										 :readonly="$specs[5] ?? NULL"
 										 :model="$specs[5] ?? NULL"
-										 :old="$entry->$columnName"
+										 :old="old($columnName, $entry->$columnName)"
 										 :errors="$errors ?? NULL"
 										 :columnName="$columnName"></x-dynamic-component>
 				@endforeach
