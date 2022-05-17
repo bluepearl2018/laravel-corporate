@@ -58,11 +58,11 @@ class Team extends Model implements HasMedia
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'slug' => ['input', 'text', 'required', 'Slug', 'Enter the slug (max. 255 chars)'],
-            'name' => ['input', 'text', 'required', 'Name', 'Enter the name'],
-            'description' => ['input', 'textarea', 'required', 'Description', 'Enter the description'],
-            'lead' => ['input', 'textarea', 'required', 'Lead', 'Enter the lead / intro'],
-            'body' => ['input', 'textarea', 'required', 'Body', 'Enter the body'],
+            'slug' => ['input', 'text', 'required', trans('teams.Slug'), trans('teams.Enter the slug (max. 255 chars)')],
+            'name' => ['input', 'text', 'required', trans('teams.Name'), trans('teams.Enter the name')],
+            'description' => ['input', 'textarea', 'required', trans('teams.Description'), trans('teams.Enter the description')],
+            'lead' => ['input', 'textarea', 'required', trans('teams.Lead'), trans('teams.Enter the lead / intro')],
+            'body' => ['input', 'textarea', 'required', trans('teams.Body'), trans('teams.Enter the body')],
         ];
     }
 

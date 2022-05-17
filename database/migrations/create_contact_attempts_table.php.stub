@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('contact_attempts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('success')->default(0);
+            $table->boolean('success')->nullable()->default(NULL);
             $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('staff_member_id')->nullable()->default(NULL)->constrained();
             $table->nullableTimestamps();

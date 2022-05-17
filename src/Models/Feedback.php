@@ -35,12 +35,11 @@ class Feedback extends Model implements HasMedia
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'body' => ['input', 'textarea', 'required', 'Feedback content', 'It is a memo. Not too long, please!'],
-            'staff_member_id' => ['input', 'hidden', 'optional', 'Staff id', 'Should be automatic'],
-            'user_id' => ['input', 'hidden', 'optional', 'The feedback for this user... ', 'Automatic'],
+            'body' => ['input', 'textarea', 'required', trans('feedbacks.Feedback content'), trans('feedbacks.It is a memo. Not too long, please!')],
+            'staff_member_id' => ['input', 'hidden', 'optional', trans('feedbacks.Staff id'), trans('feedbacks.Should be automatic')],
+            'user_id' => ['input', 'hidden', 'optional', trans('feedbacks.The feedback for this user...'), trans('feedbacks.Automatic')],
         ];
     }
-
 
     /**
      * Get the parent feedbackabkle type
@@ -53,7 +52,7 @@ class Feedback extends Model implements HasMedia
     /**
      * @return BelongsTo
      */
-    public function staff(): BelongsTo
+    public function staffMember(): BelongsTo
     {
         return $this->belongsTo(StaffMember::class);
     }

@@ -43,13 +43,13 @@ class NotificationTemplate extends Model implements HasMedia
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'package_name' => ['input', 'text', 'required', 'Package name', 'Enter the package name'],
-            'name' => ['input', 'text', 'required', 'Agreement name', 'Enter the agreement name'],
-            'message' => ['input', 'textarea', 'required', 'Description', 'Enter the description'],
-            'action' => ['input', 'text', 'required', 'Action button text', 'Enter the action text string'],
-            'url' => ['input', 'text', 'required', 'Route name', 'According to target guard...'],
-            'description' => ['input', 'textarea', 'required', 'Description', 'Enter the description'],
-            'is_active' => ['checkbox', 'option', 'optional', 'Available to be used ?', 'Check if true'],
+            'package_name' => ['input', 'text', 'required', trans('feedbacks.Package name'), trans('feedbacks.Enter the package name')],
+            'name' => ['input', 'text', 'required', trans('feedbacks.Agreement name'), trans('feedbacks.Enter the agreement name')],
+            'message' => ['input', 'textarea', 'required', trans('feedbacks.Description'), trans('feedbacks.Enter the description')],
+            'action' => ['input', 'text', 'required', trans('feedbacks.Action button text'), trans('feedbacks.Enter the action text string')],
+            'url' => ['input', 'text', 'required', trans('feedbacks.Route name'), trans('feedbacks.According to target guard...')],
+            'description' => ['input', 'textarea', 'required', trans('feedbacks.Description'), trans('feedbacks.Enter the description')],
+            'is_active' => ['checkbox', 'option', 'optional', trans('feedbacks.Available to be used ?'), trans('feedbacks.Check if true')],
         ];
     }
 }

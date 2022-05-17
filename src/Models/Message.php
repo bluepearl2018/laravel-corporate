@@ -39,9 +39,9 @@ class Message extends Model implements HasMedia
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'subject' => ['input', 'text', 'required', 'Subject', 'Enter the email subject'],
-            'message_body' => ['input', 'textarea', 'required', 'Message', 'Enter the message body'],
-            'file_path' => ['input', 'file', 'optional', 'ZIP file, with documents', 'Attach a single document or a zip']
+            'subject' => ['input', 'text', 'required', trans('feedbacks.Subject'), trans('feedbacks.Enter the email subject')],
+            'message_body' => ['input', 'textarea', 'required', trans('feedbacks.Message'), trans('feedbacks.Enter the message body')],
+            'file_path' => ['input', 'file', 'optional', trans('feedbacks.ZIP file, with documents'), trans('feedbacks.Attach a single document or a zip')]
         ];
     }
 

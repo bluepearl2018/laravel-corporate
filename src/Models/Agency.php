@@ -89,30 +89,45 @@ class Agency extends Model implements HasMedia
         ];
     }
 
-    /**
-     * Fields and class translations are saved into language lines table.
-     * This function is called from the static boot.
-     * @return void
-     */
-    public static function saveTranslations()
-    {
-        $lls = array(
-            array('group' => 'fields', 'key' => 'name', 'text' => '{"en":"Name", "pt":"Nome", "fr":"Nom"}'),
-            array('group' => 'fields', 'key' => 'phone', 'text' => '{"en":"Phone", "pt":"Telefone", "fr":"Téléphone"}'),
-//            array('group' => 'fields', 'key' => 'expense_category_id', 'text' => '{"en":"Expense Category", "pt":"Categoria de despesa"}'),
-//            array('group' => 'fields', 'key' => 'amount', 'text' => '{"en":"Amount", "pt":"Valor"}'),
-        );
+	public static function saveTranslations()
+	{
+		$lls = [
+			array('group' => 'fields', 'key' => 'name', 'text' => '{"en":"Name", "pt":"Nome", "fr":"Nom"}'),
+			array('group' => 'fields', 'key' => 'phone', 'text' => '{"en":"Phone", "pt":"Telefone", "fr":"Téléphone"}'),
+			array('group' => 'fields', 'key' => 'address1', 'text' => '{"en":"Address (First line)", "pt":"Morada (Primeira linha)", "fr":"Adresse (première ligne)"}'),
+			array('group' => 'fields', 'key' => 'address2', 'text' => '{"en":"Address (Second line)", "pt":"Morada (Segunda linha)", "fr":"Adresse (deuxième ligne)"}'),
+			array('group' => 'fields', 'key' => 'postal_code', 'text' => '{"en":"Postal code", "pt":"Codigo postal", "fr":"Code postal"}'),
+			array('group' => 'fields', 'key' => 'city', 'text' => '{"en":"City", "pt":"Cidade", "fr":"Ville"}'),
+			array('group' => 'fields', 'key' => 'council', 'text' => '{"en":"Council", "pt":"Conselho", "fr":"Province"}'),
+			array('group' => 'fields', 'key' => 'district', 'text' => '{"en":"District", "pt":"Distrito", "fr":"District"}'),
+			array('group' => 'fields', 'key' => 'mobile', 'text' => '{"en":"Mobile phone", "pt":"Telémovel", "fr":"Portable"}'),
+			array('group' => 'fields', 'key' => 'latitude', 'text' => '{"en":"Latitude", "pt":"Latituda", "fr":"Latitude"}'),
+			array('group' => 'fields', 'key' => 'longitude', 'text' => '{"en":"Longitude", "pt":"Longituda", "fr":"Longitude"}'),
+			array('group' => 'fields', 'key' => 'lead', 'text' => '{"en":"Lead", "pt":"Intro", "fr":"Intro"}'),
+			array('group' => 'fields', 'key' => 'description', 'text' => '{"en":"Description", "pt":"Descrição", "fr":"Description"}'),
+			array('group' => 'fields', 'key' => 'body', 'text' => '{"en":"Body", "pt":"Corpo de texto", "fr":"Corps de texte"}'),
+			array('group' => 'fields', 'key' => 'corporate_id', 'text' => '{"en":"Corporate", "pt":"Empresa", "fr":"Entreprise"}'),
+			array('group' => 'fields', 'key' => 'country_id', 'text' => '{"en":"Pays", "pt":"Pais", "fr":"Pays"}'),
+			array('group' => 'fields', 'key' => 'email_private', 'text' => '{"en":"Private email", "pt":"Email privado", "fr":"Email privé"}'),
+			array('group' => 'fields', 'key' => 'is_active', 'text' => '{"en":"Is active", "pt":"Ativo", "fr":"Actif"}'),
+		];
 
-        if (\Schema::hasTable('language_lines')) {
-            foreach ($lls as $ll) {
-                LanguageLine::firstOrCreate([
-                    'group' => $ll['group'],
-                    'key' => $ll['key'],
-                    'text' => json_decode($ll['text'], true)
-                ]);
-            }
-        }
-    }
+	    if (\Schema::hasTable('language_lines')) {
+		    foreach ($lls as $ll) {
+			    if(! LanguageLine::where([
+				    'group' => $ll['group'],
+				    'key' => $ll['key']
+			    ])->get()->first())
+			    {
+				    LanguageLine::create([
+					    'group' => $ll['group'],
+					    'key' => $ll['key'],
+					    'text' => json_decode($ll['text'], true)
+				    ]);
+			    };
+			}
+	    }
+	}
 
     /**
      * This static function is essential for the documentation service provider
@@ -195,6 +210,8 @@ class Agency extends Model implements HasMedia
      */
     protected static function booted()
     {
+		static::saveTranslations();
+
         if (Schema::hasTable('model_docs')) {
             ModelDoc::firstOrCreate([
                 'table_name' => (new Agency())->getTable(),

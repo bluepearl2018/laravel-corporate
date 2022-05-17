@@ -83,11 +83,11 @@ class User extends Model implements HasMedia
     public static function getFields(): array
     {
         return [
-            'name' => ['input', 'text', 'required', 'Account Name', 'This is the account name'],
-            'email' => ['input', 'email', 'required', 'Account email', 'This MUST NOT be deleted or updated'],
-            'phone' => ['input', 'phone', 'required', 'Phone', 'Enter or update a phone number'],
-            'nif' => ['input', 'pttaxid', 'required', 'NIF', 'Tax id'],
-            'country_id' => ['select', 'list', 'required', 'Country', 'Select a country', 'Eutranet\Commons\Models\Country'],
+            'name' => ['input', 'text', 'required', trans('users.Account Name'), trans('users.This is the account name')],
+            'email' => ['input', 'email', 'required', trans('users.Account email'), trans('users.This MUST NOT be deleted or updated')],
+            'phone' => ['input', 'phone', 'required', trans('users.Phone'), trans('users.Enter or update a phone number')],
+            'nif' => ['input', 'pttaxid', 'required', trans('users.Tax ID'), trans('users.Tax id')],
+            'country_id' => ['select', 'list', 'required', trans('users.Country'), trans('users.Select a country'), 'Eutranet\Commons\Models\Country'],
         ];
     }
 
@@ -135,6 +135,22 @@ class User extends Model implements HasMedia
 	public function feedbacks(): HasMany
 	{
 		return $this->hasMany(Feedback::class);
+	}
+
+	/**
+	 * @return HasMany
+	 */
+	public function consultations(): HasMany
+	{
+		return $this->hasMany(Consultation::class);
+	}
+
+	/**
+	 * @return HasMany
+	 */
+	public function contactAttempts(): HasMany
+	{
+		return $this->hasMany(ContactAttempt::class);
 	}
 
 	/**

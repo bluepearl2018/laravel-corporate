@@ -66,12 +66,12 @@ class Consultation extends Model
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'agency_id' => ['select', 'list', 'required', 'Agency', 'Select the agency', '\Eutranet\Corporate\Models\Agency'],
-            'consultant_id' => ['select', 'list', 'required', 'Consultant', 'Pick a consultant / staff member from the list', '\Eutranet\Corporate\Models\StaffMember'],
-            'booked_on' => ['dates', 'date', 'required', 'Booked on (Date)', 'Please pick the consultation date'],
-            'booked_at' => ['dates', 'time', 'required', 'Booked at (Time)', 'Please pick the consultation time'],
-            'briefing' => ['input', 'textarea', 'required', 'Enter feedback', 'Straight to the point. 2 or 3 lines, please...'],
-            'feedback_id' => ['input', 'hidden', 'optional', 'The feedback id', 'Feedbacks are provided for actions'],
+            'agency_id' => ['select', 'list', 'required', trans('consultations.Agency'), trans('consultations.Select the agency'), '\Eutranet\Corporate\Models\Agency'],
+            'consultant_id' => ['select', 'list', 'required', trans('consultations.Consultant'), trans('consultations.Pick a consultant / staff member from the list'), '\Eutranet\Corporate\Models\StaffMember'],
+            'booked_on' => ['dates', 'date', 'required', trans('consultations.Booked on (Date)'), trans('consultations.Please pick the consultation date')],
+            'booked_at' => ['dates', 'time', 'required', trans('consultations.Booked at (Time)'), trans('consultations.Please pick the consultation time')],
+            'briefing' => ['input', 'textarea', 'required', trans('consultations.Enter feedback'), trans('consultations.Straight to the point. 2 or 3 lines, please...')],
+            'feedback_id' => ['input', 'hidden', 'optional', trans('consultations.The feedback id'), trans('consultations.Feedbacks are provided for actions')],
             // 'modified_by' => ['select', 'simple', 'required', 'Staff', 'Select the staff member', '\Eutranet\Corporate\Models\StaffMember'],
         ];
     }
@@ -86,13 +86,22 @@ class Consultation extends Model
             array('group' => 'fields', 'key' => 'briefing', 'text' => '{"en":"Briefing", "pt":"Briefing"}'),
             array('group' => 'fields', 'key' => 'feedback_id', 'text' => '{"en":"Feedback", "pt":"Feedback"}'),
         );
-        foreach ($lls as $ll) {
-            LanguageLine::firstOrCreate([
-                'group' => $ll['group'],
-                'key' => $ll['key'],
-                'text' => json_decode($ll['text'], true)
-            ]);
-        };
+
+	    if (\Schema::hasTable('language_lines')) {
+		    foreach ($lls as $ll) {
+			    if(! LanguageLine::where([
+				    'group' => $ll['group'],
+				    'key' => $ll['key']
+			    ])->get()->first())
+			    {
+				    LanguageLine::create([
+					    'group' => $ll['group'],
+					    'key' => $ll['key'],
+					    'text' => json_decode($ll['text'], true)
+				    ]);
+			    };
+		    }
+	    }
     }
 
     /**
@@ -114,7 +123,7 @@ class Consultation extends Model
     /**
      * @return BelongsTo
      */
-    public function staff(): BelongsTo
+	public function staffMember(): BelongsTo
     {
         return $this->belongsTo(StaffMember::class, 'staff_member_id');
     }
@@ -183,4 +192,8 @@ class Consultation extends Model
         return __NAMESPACE__;
     }
 
+	public static function booted()
+	{
+		static::saveTranslations();
+	}
 }

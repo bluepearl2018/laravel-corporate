@@ -27,10 +27,10 @@ class ServiceFee extends Model
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'slug' => ['input', 'text', 'required', 'Slug', 'Enter the slug (max. 255 chars)'],
-            'name' => ['input', 'text', 'required', 'Name', 'Enter the name'],
-            'description' => ['input', 'textarea', 'required', 'Description', 'Enter the description'],
-            'amount' => ['input', 'textarea', 'required', 'Lead', 'Enter the lead / intro'],
+            'slug' => ['input', 'text', 'required', trans('feedbacks.Slug'), trans('feedbacks.Enter the slug (max. 255 chars)')],
+            'name' => ['input', 'text', 'required', trans('feedbacks.Name'), trans('feedbacks.Enter the name')],
+            'description' => ['input', 'textarea', 'required', trans('feedbacks.Description'), trans('feedbacks.Enter the description')],
+            'amount' => ['input', 'textarea', 'required', trans('feedbacks.Lead'), trans('feedbacks.Enter the lead / intro')],
         ];
     }
 

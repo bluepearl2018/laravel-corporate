@@ -23,8 +23,8 @@ class CorporateStaffMember extends Model
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'corporate_id' => ['select', 'list', 'required', trans('laravel-corporate-staff.Corporate'), trans('laravel-corporate.Select the laravel-corporate.'), 'Eutranet\Corporate\Models\Corporate'],
-            'staff_member_id' => ['select', 'list', 'required', trans('laravel-corporate-staff.StaffMember'), trans('laravel-corporate.Select the staff member.'), 'Eutranet\Setup\Models\StaffMember'],
+            'corporate_id' => ['select', 'list', 'required', trans('corporate-staff-member.Corporate'), trans('corporate-staff-member.Select the laravel-corporate.'), 'Eutranet\Corporate\Models\Corporate'],
+            'staff_member_id' => ['select', 'list', 'required', trans('corporate-staff-member.StaffMember'), trans('corporate-staff-member.Select the staff member.'), 'Eutranet\Setup\Models\StaffMember'],
         ];
     }
 

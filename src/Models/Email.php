@@ -39,9 +39,9 @@ class Email extends Model implements HasMedia
     {
         // field, type, required, placeholder, tip, model for select
         return [
-            'subject' => ['input', 'text', 'required', 'Subject', 'Enter the email subject'],
-            'message_body' => ['input', 'textarea', 'required', 'Message', 'Enter the message body'],
-            'file_path' => ['input', 'file', 'optional', 'ZIP file, with documents', 'Attach a single document or a zip']
+            'subject' => ['input', 'text', 'required', trans('emails.Subject'), trans('emails.Enter the email subject')],
+            'message_body' => ['input', 'textarea', 'required', trans('emails.Message'), trans('emails.Enter the message body')],
+            'file_path' => ['input', 'file', 'optional', trans('emails.ZIP file, with documents'), trans('emails.Attach a single document or a zip')]
         ];
     }
 
@@ -60,7 +60,7 @@ class Email extends Model implements HasMedia
      * @return BelongsTo
      *
      */
-    public function staff(): BelongsTo
+    public function staffMember(): BelongsTo
     {
         return $this->belongsTo(StaffMember::class);
     }

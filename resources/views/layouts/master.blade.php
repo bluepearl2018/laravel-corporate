@@ -82,7 +82,7 @@
 								   font-medium rounded-md
 								@endif">
 							<i class="fa fa-users mr-3 text-gray-400 text-xl"></i>
-							{{ __('Users') }}
+							Users
 						</a>
 					</div>
 				</nav>
@@ -329,5 +329,36 @@
 	</div>
 </div>
 @stack('bottom-scripts')
+<script>
+    if(document.querySelector("#tabs") !== null){
+        let tabsContainer = document.querySelector("#tabs");
+        let tabTogglers = tabsContainer.querySelectorAll("a");
+        console.log(tabTogglers);
+
+        tabTogglers.forEach(function (toggler) {
+            toggler.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                let tabName = this.getAttribute("href");
+
+                let tabContents = document.querySelector("#tab-contents");
+                if(tabContents !== undefined){
+                    for (let i = 0; i < tabContents.children.length; i++) {
+
+                        tabTogglers[i].parentElement.classList.remove("border-yellow-500", "border-b", "-mb-px", "opacity-100");
+                        tabContents.children[i].classList.remove("hidden");
+                        if ("#" + tabContents.children[i].id === tabName) {
+                            continue;
+                        }
+                        tabContents.children[i].classList.add("hidden");
+
+                    }
+                    e.target.parentElement.classList.add("border-yellow-500", "border-b-4", "-mb-px", "opacity-100");
+                }
+            });
+        });
+        document.getElementById("default-tab").click();
+    }
+</script>
 </body>
 </html>

@@ -10,7 +10,8 @@
 				{{ __('Feedback(s) for the user with tax ID ') . $user->nif }}
 			</x-theme-h1>
 			<p class="mb-2 italic">{{__('Here is the list with feedbacks for the customer.')}}</p>
-			<div class="flex flex-col space-y-2">
+
+			<div class="flex flex-col space-y-2 mt-4">
 				@forelse($feedbacks as $fb)
 					<div>
 						@if(Str::is('*ContactAttempt*', $fb->feedbackable_type))

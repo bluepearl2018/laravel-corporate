@@ -2,57 +2,44 @@
 
 namespace Eutranet\Corporate\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
 use Auth;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Session;
 use Eutranet\Corporate\Models\ContactAttempt;
 use Eutranet\Corporate\Models\Feedback;
 use function view;
 use Illuminate\Http\RedirectResponse;
 use Flash;
-use Illuminate\Routing\Redirector;
+use Validator;
+use JetBrains\PhpStorm\Pure;
+use Eutranet\Corporate\Models\User;
 
-class ContactAttemptController extends Controller
+abstract class ContactAttemptController extends Abstracts\BaseContactAttemptController
 {
-    public function __construct()
+	private string $viewPath;
+	private string $targetModule;
+
+	#[Pure] public function __construct()
     {
-        $this->middleware('has-selu');
-        $this->middleware('has-user-info');
+	    parent::__construct();
+	    $this->viewPath = 'corporate'; // Module view path "viewpath" like in viewpath::folder.blade-name
+	    $this->targetModule = 'admin';
+		// $this->middleware('has-selu');
+		// $this->middleware('has-user-info');
         // $this->authorizeResource(App\Models\ContactAttempt::class);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @param User|null $user
-     * @return Application|Factory|View
-     */
-    public function index(?User $user): View|Factory|Application
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @param User|\App\Models\User|null $user
+	 * @return Application|Factory|View
+	 */
+    public function create(User|\App\Models\User|null $user): View|Factory|Application
     {
-        if (isset(Session::get('users.selectedUser')->consultations) && Session::get('users.selectedUser')->contactAttempts->count() > 0) {
-            $contactAttempts = Session::get('users.selectedUser')->contactAttempts->sortByDesc('created_at') ?? $contactAttempts = null;
-        }
-        $contactAttempts = $user->contactAttempts ?? $contactAttempts = ContactAttempt::all();
-        return view('corporate::contact-attempts.index', [
-			'contactAttempts' => $contactAttempts,
-	        'user' => $user
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param User|null $user
-     * @return Application|Factory|View
-     */
-    public function create(?User $user): View|Factory|Application
-    {
-        return view('corporate::contact-attempts.create', [
+        return view($this->viewPath.'::contact-attempts.create', [
 			'user' => $user
         ]);
     }
@@ -61,84 +48,78 @@ class ContactAttemptController extends Controller
 	 * Store a newly created resource in storage.
 	 *
 	 * @param Request $request
-	 * @param User $user
-	 * @return RedirectResponse
+	 * @param User|\App\Models\User $user
+	 * @return Application|Factory|View
 	 */
-    public function store(Request $request, User $user): RedirectResponse
+    public function store(Request $request, User|\App\Models\User $user): Application|Factory|View
     {
-        $success = '';
-        if ($request->has('success')) {
-            $request->success == 'on' ? $success = true : $success = false;
-        }
         $rules = [
-          'body' => 'max:1200',
+			'success' => 'boolean',
+	        'body' => 'max:1200',
+	        'user_id' => 'required|exists:users,id',
+	        'staff_member_id' => 'required|exists:staff_members,id',
         ];
-        $validated = $request->validate($rules);
-        $contactAttempt = ContactAttempt::create([
-            'success' => $success,
-            'user_id' => $user->id,
-            'staff_member_id' => Auth::id()
-        ]);
-        $feedback = new Feedback([
-            'body' => $request->body,
-            'staff_member_id' => Auth::id(),
-            'user_id' => $request->user_id,
-            'feedbackable_type' => 'Eutranet\Corporate\Models\ContactAttempt',
-            'feedbackable_id' => $contactAttempt->id,
-            'modified_by' => null
-        ]);
-        $feedback->save();
-        return redirect(route('admin.users.contact-attempts.show', [$user, $contactAttempt]));
+
+	    $validator = Validator::make($request->except('_token'), [
+		    $rules
+	    ]);
+
+	    if ($validator->fails()) {
+		    return view($this->viewPath.'::contact-attempts.create');
+	    } else {
+		    $validated = $request->validate($rules);
+		    $contactAttempt = ContactAttempt::create($validated);
+		    $feedback = new Feedback([
+			    'body' => $request->body,
+			    'staff_member_id' => Auth::id(),
+			    'user_id' => $request->user_id,
+			    'feedbackable_type' => 'Eutranet\Corporate\Models\ContactAttempt',
+			    'feedbackable_id' => $contactAttempt->id,
+			    'modified_by' => null
+		    ]);
+		    $feedback->save();
+		    return redirect(route($this->targetModule.'.users.contact-attempts.show', [$user, $contactAttempt]));
+	    }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param User|null $user
-     * @param ContactAttempt $contactAttempt
-     * @return Application|Factory|View
-     */
-    public function show(?User $user, ContactAttempt $contactAttempt): View|Factory|Application
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param User|\App\Models\User|null $user
+	 * @param ContactAttempt $contactAttempt
+	 * @return Application|Factory|View
+	 */
+    public function show(User|\App\Models\User|null $user, ContactAttempt $contactAttempt): View|Factory|Application
     {
-        return view('corporate::contact-attempts.show', ['user' => $user,'contactAttempt' => $contactAttempt]);
+        return view($this->viewPath.'::contact-attempts.show', ['user' => $user,'contactAttempt' => $contactAttempt]);
     }
 
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param User|null $user
+	 * @param User|\App\Models\User|null $user
 	 * @param ContactAttempt $contactAttempt
 	 * @return RedirectResponse
 	 */
-    public function edit(?User $user, ContactAttempt $contactAttempt) : RedirectResponse
+    public function edit(User|\App\Models\User|null $user, ContactAttempt $contactAttempt) : RedirectResponse
     {
 		Flash::info(trans('Contact attempt edit is not available.'));
-		return back();
+		return redirect()->back();
 		// return view('corporate::contact-attempts.edit', ['contactAttempt' => $contactAttempt]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param ContactAttempt $contactAttempt
-     * @return RedirectResponse
-     */
-    public function update(Request $request, ContactAttempt $contactAttempt): RedirectResponse
-    {
-	    Flash::info(trans('Contact attempt update is not available.'));
-	    return back();
-    }
-
 	/**
-	 * Remove the specified resource from storage.
+	 * Update the specified resource in storage.
 	 *
-	 * @param ContactAttempt $contactAttempt
+	 * @param Request|\App\Models\User|null $request
+	 * @param ContactAttempt|\App\Models\User|User $contactAttempt
 	 * @return RedirectResponse
 	 */
-    public function destroy(ContactAttempt $contactAttempt): RedirectResponse
+    public function update(Request|\App\Models\User|null $request, ContactAttempt|\App\Models\User|User $contactAttempt)
     {
-	    Flash::info(trans('Contact attempt deletion is not available.'));
-	    return back();
+	    Flash::info(trans('Contact attempt update is not available.'));
+	    return redirect()->back();
     }
+
 }

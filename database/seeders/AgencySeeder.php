@@ -15,8 +15,7 @@ class AgencySeeder extends Seeder
      */
     public function run()
     {
-        Agency::firstOrCreate(
-            [
+        $firstAgency = [
                 'id' => '1',
                 'corporate_id' => '1',
                 'name' => 'Name of Agency',
@@ -44,8 +43,7 @@ class AgencySeeder extends Seeder
                 'created_at' => null,
                 'updated_at' => '2022-04-16 15:45:33',
                 'deleted_at' => null,
-            ]
-        );
+            ];
         $agenciesArray = [
             [
                 'id' => '2',
@@ -439,10 +437,21 @@ class AgencySeeder extends Seeder
             ],
         ];
 
-        if (DB::table('agencies')->count() <= 1) {
-            DB::table('agencies')->insert(
-                $agenciesArray
+        if (DB::table('agencies')->get()->count() < 1) {
+			DB::table('agencies')->insert(
+				$firstAgency
             );
         }
+	    if (DB::table('agencies')->get()->count() < 2) {
+		    DB::table('agencies')->insert(
+			    $agenciesArray
+		    );
+	    }
+	    if (DB::table('agencies')->get()->count() > 0) {
+			foreach(Agency::all() as $agency)
+			{
+				$agency->update(['name' => $agency->code]);
+			}
+	    }
     }
 }
