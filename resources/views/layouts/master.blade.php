@@ -243,7 +243,7 @@
 						<label for="nif">@if($errors->any && $errors->has('nif'))
 								<span class="text-xs text-red-500">***</span>
 							@endif</label>
-						<input id="nif" name="nif" type="text" placeholder="{{ __('Search by Tax ID') }}" required
+						<input id="nif" name="nif" type="text" placeholder="{{ __('search.Search by Tax ID') }}" required
 							   class="max-w-xs ml-4 mr-2 text-lg py-1 tracking-wide shadow-sm focus:ring-2 focus:ring-offset-0 focus:ring-yellow-500 block w-full sm:text-sm border-yellow-300 rounded-md"
 							   minlength="9" maxlength="9"/>
 						<button type="submit" form="search-for-nif-frm" class="inline-block w-12"><i

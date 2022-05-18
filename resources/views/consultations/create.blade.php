@@ -4,9 +4,8 @@
 		@includeIf('corporate::consultations.actions-and-title')
 		<div class="col-span-full">
 			<x-theme-h1>
-				<span>{{__('Plan a consultation for')}} <strong>{{ $user->name }}</strong></span>
+				<span>{{__('user-consultations.Plan a consultation for')}} <strong>{{ $user->name }}</strong></span>
 			</x-theme-h1>
-			<p class="italic">{{__('Find the planned consultations via the user\'s profile.')}}</p>
 		</div>
 		@if($errors->any())
 			<x-theme-form-validation-errors></x-theme-form-validation-errors>
