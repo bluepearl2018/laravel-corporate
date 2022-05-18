@@ -17,12 +17,12 @@
 						@if(Str::is('*ContactAttempt*', $fb->feedbackable_type))
 							<a href="{{ route('admin.users.contact-attempts.show', [$user, $fb->feedbackable_id]) }}">
 								<i class="fa fa-phone"></i>
-								{!! strip_tags($fb->body) ?? __('NO FEEDBACK') !!}
+								{!! strip_tags($fb->body) ?? __('warnings.NO FEEDBACK') !!}
 							</a>
 						@elseif(Str::is('*Consultation*', $fb->feedbackable_type))
 							<a href="{{ route('admin.users.consultations.show', [$user, $fb->feedbackable_id]) }}">
 								<i class="fa fa-calendar-alt"></i>
-								{!! strip_tags($fb->body) ?? __('NO FEEDBACK') !!}
+								{!! strip_tags($fb->body) ?? __('warnings.NO FEEDBACK') !!}
 							</a>
 						@endif
 					</div>

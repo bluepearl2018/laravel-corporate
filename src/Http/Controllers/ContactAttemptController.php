@@ -16,7 +16,7 @@ use Validator;
 use JetBrains\PhpStorm\Pure;
 use Eutranet\Corporate\Models\User;
 
-abstract class ContactAttemptController extends Abstracts\BaseContactAttemptController
+class ContactAttemptController extends Abstracts\BaseContactAttemptController
 {
 	private string $viewPath;
 	private string $targetModule;
@@ -110,16 +110,20 @@ abstract class ContactAttemptController extends Abstracts\BaseContactAttemptCont
     }
 
 	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param Request|\App\Models\User|null $request
-	 * @param ContactAttempt|\App\Models\User|User $contactAttempt
-	 * @return RedirectResponse
+	 * @inheritDoc
 	 */
-    public function update(Request|\App\Models\User|null $request, ContactAttempt|\App\Models\User|User $contactAttempt)
-    {
-	    Flash::info(trans('Contact attempt update is not available.'));
-	    return redirect()->back();
-    }
+	public function update(Request $request, User $user, ContactAttempt $contactAttempt): Application|Factory|View|RedirectResponse
+	{
+		// TODO: Implement update() method.
+		return true;
+	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public function destroy(?User $user, ContactAttempt $contactAttempt): RedirectResponse
+	{
+		// TODO: Implement destroy() method.
+		return true;
+	}
 }

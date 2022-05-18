@@ -4,7 +4,6 @@ use Eutranet\Corporate\Http\Controllers\CorporateAgreementController;
 use Eutranet\Corporate\Http\Controllers\AgencyController;
 use Eutranet\Corporate\Http\Controllers\CorporateController;
 use Eutranet\Corporate\Http\Controllers\CorporateGeneralTermController;
-use Eutranet\Frontend\Http\Controllers\ServiceController;
 use Eutranet\Corporate\Http\Controllers\ServiceFeeController;
 use Eutranet\Corporate\Http\Controllers\StaffPortfolioController;
 use Eutranet\Corporate\Http\Controllers\ConsultationController;
@@ -29,7 +28,7 @@ Route::middleware(['web', 'auth:admin'])->name('setup.')->prefix('setup')->group
     Route::resource('corporate-staff-member', CorporateStaffMemberController::class)->names('corporate-staff-member');
     Route::resource('corporate-general-terms', CorporateGeneralTermController::class)->names('corporate-general-terms');
     Route::resource('feedbacks', FeedbackController::class)->names('feedbacks');
-    Route::resource('services', ServiceController::class)->names('services');
+    // Route::resource('services', ServiceController::class)->names('services');
     Route::resource('service-fees', ServiceFeeController::class)->names('service-fees');
     Route::resource('staff-teams', StaffTeamController::class)->names('staff-teams');
     Route::resource('staff-portfolio', StaffPortfolioController::class)->names('staff-portfolio');

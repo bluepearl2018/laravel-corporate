@@ -6,7 +6,7 @@
 	</a>
 	{{-- Admin selected user consultations  --}}
 	<a href="{{ route('admin.my-space.consultations.index', $selu) }}"
-	   class="inline-block flex flex-row" title="{{ __('Consultations') }}">
+	   class="inline-block flex flex-row" title="{{ __('labels.Consultations') }}">
 		<i class="fa fa-calendar-alt self-center text-xl text-yellow-500 mr-4"></i>
 	</a>
 	{{-- Admin selected user messages  --}}
@@ -26,7 +26,7 @@
 	</a>
 	{{-- Admin selected user attachments  --}}
 	<a href="{{ route('backend.users.user-attachments.index', $selu) }}" class="inline-block flex flex-row"
-	   title="{{ __('Attachments') }}">
+	   title="{{ __('labels.Attachments') }}">
 		<i class="fa fa-file-upload self-center text-xl text-yellow-500 mr-4"></i>
 	</a>
 </div>
@@ -41,7 +41,7 @@
 					class="fa fa-circle text-red-300"></i> @endif
 			<a class="hover:underline mr-2  font-extrabold uppercase"
 			   href="{{ route('backend.users.show', $selu) }}">
-				{{$selu->name ?? 'NO NAME'}} ({{ $selu->nif ?? 'NO TAX ID' }})</a>
+				{{$selu->name ?? 'NO NAME'}} ({{ $selu->nif ?? __('warnings.NO TAX ID') }})</a>
 			<span class="block w-full uppercase font-bold text-base text-left bg-gray-100 text-gray-500">
                                     <i class="fa fa-flag-checkered mr-2"></i>
                                     {{ $selu->userStatus->name }}

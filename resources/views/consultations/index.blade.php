@@ -11,11 +11,11 @@
 						class="text-2xl mr-2 uppercase">{{ \Eutranet\Corporate\Models\Consultation::count() }} {{__('consultation(s)')}}
 					<span class="text-base">
 						<a href="{{ route('admin.users.consultations.index', $user) }}">
-							(<span>{{ __('Display all for') }} {{ $user->name }} | </span>
+							(<span>{{ __('labels.Display all for') }} {{ $user->name }} | </span>
 						</a>
 						<a class="bg-yellow-200 px-1"
 						   href="{{ route('admin.users.consultations.index', [$user, 'filter' => $todayDate]) }}">{{ \Eutranet\Corporate\Models\Consultation::where('booked_on', $todayDate)->count() }}
-							<span class="text-base">{{ __('today') }}</span>
+							<span class="text-base">{{ __('labels.today') }}</span>
 						</a>)
 					</span>
 				</x-theme-h1>
@@ -29,19 +29,19 @@
 							<a href="{{ route('admin.users.consultations.index',  [$user, 'filter='.$yesterdayDate]) }}">
 								<span class="uppercase inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium font-bold
 									@if(Request::get('filter') == $yesterdayDate) bg-yellow-500 text-gray-700 @else bg-gray-100 text-gray-800 @endif">
-									{{ __('yesterday') }}
+									{{ __('labels.yesterday') }}
 								</span>
 							</a>
 							<a href="{{ route('admin.users.consultations.index', [$user, 'filter='.$todayDate]) }}">
 								<span class="uppercase inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium font-bold
 									@if(Request::get('filter') == $todayDate) bg-yellow-500 text-gray-700 @else bg-gray-100 text-gray-800 @endif">
-									{{ __('today') }}
+									{{ __('labels.today') }}
 								</span>
 							</a>
 							<a href="{{ route('admin.users.consultations.index', [$user, 'filter='.$tomorrowDate]) }}">
 								<span class="uppercase inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium font-bold
 									@if(Request::get('filter') == $tomorrowDate) bg-yellow-500 text-gray-700 @else bg-gray-100 text-gray-800 @endif">
-									{{ __('tomorrow') }}
+									{{ __('labels.tomorrow') }}
 								</span>
 							</a>
 						</div>

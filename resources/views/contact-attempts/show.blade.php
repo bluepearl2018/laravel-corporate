@@ -4,9 +4,9 @@
 		@includeIf('corporate::contact-attempts.actions-and-title')
 		<div class="col-span-full">
 			<x-theme-h1>{{ __('Contact attempt info') }}</x-theme-h1>
-			<strong>{{__('Contact :')}} {{ $contactAttempt->user->name ?? __('NO LEAD')  }} | {{ __('Tax ID') }}
-				: {{ $contactAttempt->user->nif ?? __('NO NIF')  }} | {{ __('Phone') }}
-				: {{ $contactAttempt->user->phone ?? __('NO PHONE')  }}</strong>
+			<strong>{{__('Contact :')}} {{ $contactAttempt->user->name ?? __('NO LEAD')  }} | {{ __('labels.Tax ID') }}
+				: {{ $contactAttempt->user->nif ?? __('warnings.NO NIF')  }} | {{ __('fields.Phone') }}
+				: {{ $contactAttempt->user->phone ?? __('warnings.NO PHONE NUMBER')  }}</strong>
 			<p>{{ __('Trial at :') }} {{ $contactAttempt->created_at->format('d-m-Y @ H:i:s') ?? __('NO CREATION DATE') }}</p>
 			<div class="my-2 p-4 border-gray-500 rounded-xl bg-gray-100 flex flex-row items-center">
 				@if($contactAttempt->success)

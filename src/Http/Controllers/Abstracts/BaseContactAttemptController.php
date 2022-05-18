@@ -94,9 +94,9 @@ abstract class BaseContactAttemptController extends Controller
 	 * @param Request $request
 	 * @param User $user
 	 * @param ContactAttempt $contactAttempt
-	 * @return Application|Factory|View
+	 * @return Application|Factory|View|RedirectResponse
 	 */
-	abstract public function update(Request $request, User $user, ContactAttempt $contactAttempt): Application|Factory|View;
+	abstract public function update(Request $request, User $user, ContactAttempt $contactAttempt): Application|Factory|View|RedirectResponse;
 
 	/**
 	 * Remove the specified resource from storage.

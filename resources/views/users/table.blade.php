@@ -35,7 +35,7 @@
 			<thead class="bg-gray-50">
 			<tr>
 				<th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">{{__('Name')}}</th>
-				<th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">{{__('Function')}}</th>
+				<th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">{{__('user-employments.Function')}}</th>
 				<th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">{{__('Assigned to')}}</th>
 				<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{__('Status')}}</th>
 				<th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
@@ -112,7 +112,7 @@
 												</select>
 												<button type="submit"
 														form="staff-assign-user-frm-{{ $loop->index }}"
-														title="{{ __('Save') }}">
+														title="{{ __('labels.Save') }}">
 													<i class="fa fa-save inline-block mx-2"></i>
 												</button>
 											</form>
