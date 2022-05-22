@@ -3,7 +3,7 @@
 	<div class="sm:flex sm:items-center col-span-full">
 		<div class="sm:flex-auto">
 			<x-theme-h1>
-				<strong>{{ \App\Models\User::count() }} User{{App\Models\User::count() > 1 ? '(s)' : '' }} found</strong>
+				<strong>{{ \App\Models\User::count() }} User{{App\Models\User::count() > 1 ? '(s)' : '' }} {{ __('labels.found') }} </strong>
 				<span class="text-base">
                         (
                         <a class="px-1" href="{{ route('admin.users.index') }}">
